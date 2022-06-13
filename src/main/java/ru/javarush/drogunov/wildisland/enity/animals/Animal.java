@@ -1,10 +1,10 @@
 package ru.javarush.drogunov.wildisland.enity.animals;
 
+import ru.javarush.drogunov.wildisland.enity.GameUnit;
 import ru.javarush.drogunov.wildisland.enity.PlaySpace;
 import ru.javarush.drogunov.wildisland.interfaces.Animalble;
-import ru.javarush.drogunov.wildisland.interfaces.Essences;
 
-public abstract class Animal implements Animalble, Essences {
+public abstract class Animal extends GameUnit implements Animalble {
     private String viewAnimal;
     private int weight;
     private int satiety;

@@ -19,7 +19,7 @@ public class EssencesOnTheIsland {
         standardMaxCount.put(Eagle.class, 20);
         standardMaxCount.put(Horse.class, 20);
         standardMaxCount.put(Deer.class, 20);
-        standardMaxCount.put(Rebbit.class, 150);
+        standardMaxCount.put(Rabbit.class, 150);
         standardMaxCount.put(Mouse.class, 500);
         standardMaxCount.put(Goat.class, 140);
         standardMaxCount.put(Sheep.class, 140);

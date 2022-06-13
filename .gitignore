@@ -37,4 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-.src/main/java/ru/javarush/drogunov/wildisland/Notes.txt
+!/src/main/java/ru/javarush/drogunov/wildisland/Notes.txt

@@ -1,7 +1,7 @@
 package ru.javarush.drogunov.wildisland.enity.animals;
 
 import ru.javarush.drogunov.wildisland.enity.GameUnit;
-import ru.javarush.drogunov.wildisland.enity.PlaySpace;
+import ru.javarush.drogunov.wildisland.game_space.GameSpace;
 import ru.javarush.drogunov.wildisland.interfaces.Animalble;
 
 public abstract class Animal extends GameUnit implements Animalble {
@@ -9,6 +9,10 @@ public abstract class Animal extends GameUnit implements Animalble {
     private int weight;
     private int satiety;
     private int maxSteps;
+
+    public Animal(int x, int y) {
+        super(x, y);
+    }
 
     @Override
     public void eat(Animal one, Animal two) {
@@ -21,7 +25,7 @@ public abstract class Animal extends GameUnit implements Animalble {
     }
 
     @Override
-    public void walk(PlaySpace playSpace) {
+    public void walk(GameSpace playSpace) {
 
     }
 

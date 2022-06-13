@@ -1,6 +1,6 @@
 package ru.javarush.drogunov.wildisland.interfaces;
 
-import ru.javarush.drogunov.wildisland.enity.PlaySpace;
+import ru.javarush.drogunov.wildisland.game_space.GameSpace;
 import ru.javarush.drogunov.wildisland.enity.animals.Animal;
 
 public interface Animalble {
@@ -8,5 +8,5 @@ public interface Animalble {
 
     void multiply(Animal one, Animal two);
 
-    void walk(PlaySpace playSpace);
+    void walk(GameSpace playSpace);
 }

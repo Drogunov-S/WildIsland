@@ -1,4 +1,4 @@
-package ru.javarush.drogunov.wildisland.setting_game;
+package ru.javarush.drogunov.wildisland.game_settings;
 
 import ru.javarush.drogunov.wildisland.enity.animals.herbivors.*;
 import ru.javarush.drogunov.wildisland.enity.animals.predators.*;
@@ -11,7 +11,7 @@ public class EssencesOnTheIsland {
     private final Map<Object, Integer> standardMaxCount = new HashMap<>();
 
 
-    EssencesOnTheIsland() {
+    public EssencesOnTheIsland() {
         standardMaxCount.put(Wolf.class, 30);
         standardMaxCount.put(Boa.class, 30);
         standardMaxCount.put(Fox.class, 30);

@@ -24,4 +24,6 @@ public abstract class Animal implements Animalble, Essences {
     public void walk(PlaySpace playSpace) {
 
     }
+
+    //TODO иквелс и хэшкод
 }

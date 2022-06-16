@@ -7,7 +7,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Herbivorous;
 @Populations(max = 50)
 public class WildBoard extends Animal implements Herbivorous {
 
-    public WildBoard(int x, int y) {
+  /*  public WildBoard(int x, int y) {
         super(x, y);
-    }
+    }*/
 }

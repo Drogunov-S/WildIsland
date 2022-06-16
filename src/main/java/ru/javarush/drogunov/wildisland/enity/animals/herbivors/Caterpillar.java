@@ -7,7 +7,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Herbivorous;
 @Populations(max = 1000)
 public class Caterpillar extends Animal implements Herbivorous {
 
-    public Caterpillar(int x, int y) {
+   /* public Caterpillar(int x, int y) {
         super(x, y);
-    }
+    }*/
 }

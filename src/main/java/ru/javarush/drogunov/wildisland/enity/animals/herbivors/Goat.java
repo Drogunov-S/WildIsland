@@ -7,7 +7,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Herbivorous;
 @Populations(max = 140)
 public class Goat extends Animal implements Herbivorous {
 
-    public Goat(int x, int y) {
+    /*public Goat(int x, int y) {
         super(x, y);
-    }
+    }*/
 }

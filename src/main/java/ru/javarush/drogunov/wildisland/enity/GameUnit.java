@@ -1,10 +1,7 @@
 package ru.javarush.drogunov.wildisland.enity;
 
-import ru.javarush.drogunov.wildisland.game_space.Cell;
-import ru.javarush.drogunov.wildisland.game_space.GameSpace;
-
 public abstract class GameUnit {
-    GameSpace gameSpace = GameSpace.getInstance();
+    /*GameSpace gameSpace = GameSpace.getInstance();
     Cell position;
 
     public GameUnit(int x, int y) {
@@ -13,5 +10,5 @@ public abstract class GameUnit {
         } else {
             gameSpace.getCell(x, y).addCell(this);
         }
-    }
+    }*/
 }

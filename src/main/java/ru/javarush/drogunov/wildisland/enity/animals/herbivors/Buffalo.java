@@ -7,7 +7,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Herbivorous;
 @Populations(max = 20)
 public class Buffalo extends Animal implements Herbivorous {
 
-    public Buffalo(int x, int y) {
+    /*public Buffalo(int x, int y) {
         super(x, y);
-    }
+    }*/
 }

@@ -10,9 +10,9 @@ public abstract class Animal extends GameUnit implements Animalble {
     private int satiety;
     private int maxSteps;
 
-    public Animal(int x, int y) {
+   /* public Animal(int x, int y) {
         super(x, y);
-    }
+    }*/
 
     @Override
     public void eat(Animal one, Animal two) {

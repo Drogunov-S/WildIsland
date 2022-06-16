@@ -4,7 +4,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Vegetable;
 
 public abstract class Plant extends GameUnit implements Vegetable {
 
-    public Plant(int x, int y) {
+    /*public Plant(int x, int y) {
         super(x, y);
-    }
+    }*/
 }

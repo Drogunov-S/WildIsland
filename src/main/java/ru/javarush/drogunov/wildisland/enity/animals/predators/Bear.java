@@ -6,7 +6,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Predatory;
 @Populations(max = 5)
 public class Bear extends Animal implements Predatory {
 
-    public Bear(int x, int y) {
+  /*  public Bear(int x, int y) {
         super(x, y);
-    }
+    }*/
 }

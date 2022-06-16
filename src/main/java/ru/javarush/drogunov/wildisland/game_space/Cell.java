@@ -5,8 +5,9 @@ import ru.javarush.drogunov.wildisland.enity.GameUnit;
 import java.util.List;
 
 public class Cell {
-
+    private static GameSpace gameSpace = GameSpace.getInstance();
     List<GameUnit> gameUnitListOnCell;
+
 
     private int x;
 
@@ -16,6 +17,12 @@ public class Cell {
         this.x = x;
         this.y = y;
         gameUnitListOnCell.add(gameUnit);
+    }
+
+    public Cell(int x, int y, List<GameUnit> gameUnit) {
+        this.x = x;
+        this.y = y;
+        gameUnitListOnCell.addAll(gameUnit);
     }
 
 

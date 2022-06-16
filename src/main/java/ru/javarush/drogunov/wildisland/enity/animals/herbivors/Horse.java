@@ -7,8 +7,8 @@ import ru.javarush.drogunov.wildisland.interfaces.Herbivorous;
 @Populations(max = 20)
 public class Horse extends Animal implements Herbivorous {
 
-    public Horse(int x, int y) {
+  /*  public Horse(int x, int y) {
         super(x, y);
-    }
+    }*/
 }
 

@@ -8,7 +8,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Predatory;
 public class Wolf extends Animal implements Predatory {
 
 
-    public Wolf(int x, int y) {
+ /*   public Wolf(int x, int y) {
         super(x, y);
-    }
+    }*/
 }

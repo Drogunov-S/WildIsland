@@ -7,8 +7,8 @@ import ru.javarush.drogunov.wildisland.interfaces.Predatory;
 @Populations(max = 30)
 public class Fox extends Animal implements Predatory {
 
-    public Fox(int x, int y) {
+  /*  public Fox(int x, int y) {
         super(x, y);
-    }
+    }*/
 }
 

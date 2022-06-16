@@ -7,7 +7,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Herbivorous;
 @Populations(max = 20)
 public class Deer extends Animal implements Herbivorous {
 
-    public Deer(int x, int y) {
+   /* public Deer(int x, int y) {
         super(x, y);
-    }
+    }*/
 }

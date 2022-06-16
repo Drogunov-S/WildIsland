@@ -18,13 +18,15 @@ public class Injector {
         beans.put(GameSpace.class, GameSpace.class);
         beans.put(GameSettings.class, GameSettings.class);
         beans.put(StartPopulation.class, StartPopulation.class);
+        beans.put(FabricGameUnit.class, FabricGameUnit.class);
     }
 
     @SneakyThrows
     public static Object injectDependencies(Class<?> clazz) {
-        Object newObject = clazz.getConstructor().newInstance();
+//        Object newObject = clazz.getConstructor().newInstance();
+        Object newObject = null;
 
-        for (Field declaredField : newObject.getClass().getDeclaredFields()) {
+        for (Field declaredField : /*newObject.getClass()*/clazz.getDeclaredFields()) {
             if (declaredField.isAnnotationPresent(Initialize.class)) {
                 Class<?> type = declaredField.getType();
                 Class<?> injectedClass = beans.get(type);
@@ -33,6 +35,7 @@ public class Injector {
                 }
 
                 Object injectingInstance = injectDependencies(injectedClass);
+                newObject = clazz.getConstructor().newInstance();
                 declaredField.setAccessible(true);
                 declaredField.set(newObject, injectingInstance);
                 declaredField.setAccessible(false);

@@ -15,6 +15,7 @@ public class GameSettings {
     }
 
     public static GameSettings getInstance() {
+        System.out.println("setting");
         if (gameSettings == null) {
             return new GameSettings(1);
         }

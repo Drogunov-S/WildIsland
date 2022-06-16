@@ -6,7 +6,7 @@ import ru.javarush.drogunov.wildisland.enity.plants.Plant;
 @Populations(max = 200)
 public class SimplePlant extends Plant {
 
-    public SimplePlant(int x, int y) {
+    /*public SimplePlant(int x, int y) {
         super(x, y);
-    }
+    }*/
 }

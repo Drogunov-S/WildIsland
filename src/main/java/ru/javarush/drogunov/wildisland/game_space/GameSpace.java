@@ -24,6 +24,7 @@ public class GameSpace {
     }
 
     public static GameSpace getInstance() {
+        System.out.println("game space");
         if (gameSpace == null) {
             gameSpace = new GameSpace(GameSettings.getInstance());
             return gameSpace;

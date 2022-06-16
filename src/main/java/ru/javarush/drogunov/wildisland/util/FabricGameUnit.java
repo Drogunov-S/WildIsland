@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FabricGameUnit {
 
-@SneakyThrows
+    @SneakyThrows
     public static List<GameUnit> getAllRandomCountGameUnit() {
         List<GameUnit> units = new ArrayList<>();
         for (Class unit : Constants.GAME_UNITS) {
@@ -20,10 +20,17 @@ public class FabricGameUnit {
                 units.add((GameUnit) unit.getConstructor().newInstance());
             }
         }
-
+        /*units.add(new WildBoard());
+        units.add(new WildBoard());
+        units.add(new WildBoard());
+        units.add(new WildBoard());
+        units.add(new WildBoard());
+        units.add(new Rabbit());
+        units.add(new Rabbit());
+        units.add(new Rabbit());
+        units.add(new Rabbit());*/
         return units;
     }
-
 
 
 }

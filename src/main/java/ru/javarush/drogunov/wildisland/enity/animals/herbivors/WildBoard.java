@@ -6,8 +6,10 @@ import ru.javarush.drogunov.wildisland.interfaces.Actionable;
 
 @Populations(max = 50)
 public class WildBoard extends GameUnit implements Actionable {
-
-  /*  public WildBoard(int x, int y) {
+    public WildBoard() {
+        super();
+    }
+/*  public WildBoard(int x, int y) {
         super(x, y);
     }*/
 }

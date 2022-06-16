@@ -55,4 +55,16 @@ public class Cell {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("| ");
+        for (int i = 0; i < gameUnitListOnCell.size(); i++) {
+            GameUnit gameUnit = gameUnitListOnCell.get(i);
+            str.append(gameUnit.toString().substring(0,1));
+        }
+        str.append(" |\n");
+        return str.toString();
+    }
 }

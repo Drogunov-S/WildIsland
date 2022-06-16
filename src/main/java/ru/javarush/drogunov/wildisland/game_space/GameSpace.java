@@ -1,7 +1,7 @@
 package ru.javarush.drogunov.wildisland.game_space;
 
 
-import java.util.Set;
+import java.util.Arrays;
 
 public class GameSpace {
     private GameSpace gameSpace;
@@ -30,7 +30,11 @@ public class GameSpace {
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
+        return Arrays.deepToString(space);
+
+
+
+        /*StringBuilder str = new StringBuilder();
         for (Cell[] cells : space) {
             str.append( "|");
             for (Cell cell : cells) {
@@ -43,17 +47,17 @@ public class GameSpace {
                     str.append(" ").append(nameUnit.substring(0, 3)).append(" ");
                 }
                 str.append(" + ");
-                /*List<GameUnit> gameUnitListOnCell = cell.getGameUnitListOnCell();
+                *//*List<GameUnit> gameUnitListOnCell = cell.getGameUnitListOnCell();
                 if (gameUnitListOnCell.size() == 0) {
                     return "пусто";
                 }
                 for (GameUnit gameUnit : gameUnitListOnCell) {
                     String substring = gameUnit.getClass().getSimpleName().substring(0, 3);
                     str.append(" ").append(substring).append(" ");
-                }*/
+                }*//*
             }
             str.append("|\n");
         }
-        return str.toString();
+        return str.toString();*/
     }
 }

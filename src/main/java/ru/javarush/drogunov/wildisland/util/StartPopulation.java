@@ -1,3 +1,4 @@
+/*
 package ru.javarush.drogunov.wildisland.util;
 
 import ru.javarush.drogunov.wildisland.game_space.Cell;
@@ -20,6 +21,7 @@ public class StartPopulation {
 
 
 
+*/
 /*
         for (Class aClass : Constants.GAME_UNITS) {
             Populations declaredAnnotation = (Populations) aClass.getDeclaredAnnotation(Populations.class);
@@ -32,9 +34,12 @@ public class StartPopulation {
                     }
                 }
             }
-        }*/
+        }*//*
+
 
 
     }
 
 }
+*/
+//TODO удалить

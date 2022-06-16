@@ -1,3 +1,4 @@
+/*
 package ru.javarush.drogunov.wildisland.util;
 
 import lombok.SneakyThrows;
@@ -26,7 +27,9 @@ public class Injector {
 //        Object newObject = clazz.getConstructor().newInstance();
         Object newObject = null;
 
-        for (Field declaredField : /*newObject.getClass()*/clazz.getDeclaredFields()) {
+        for (Field declaredField : */
+/*newObject.getClass()*//*
+clazz.getDeclaredFields()) {
             if (declaredField.isAnnotationPresent(Initialize.class)) {
                 Class<?> type = declaredField.getType();
                 Class<?> injectedClass = beans.get(type);
@@ -44,3 +47,5 @@ public class Injector {
         return newObject;
     }
 }
+*/
+//TODO удалить

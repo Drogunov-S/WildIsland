@@ -1,7 +1,8 @@
 package ru.javarush.drogunov.wildisland.game_space;
 
+
 public class GameSpace {
-    private static GameSpace gameSpace;
+    private GameSpace gameSpace;
 
     public Cell[][] getSpace() {
         return space;

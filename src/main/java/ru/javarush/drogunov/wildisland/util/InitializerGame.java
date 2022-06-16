@@ -1,3 +1,4 @@
+/*
 package ru.javarush.drogunov.wildisland.util;
 
 import ru.javarush.drogunov.wildisland.enity.annotations.Initialize;
@@ -16,3 +17,5 @@ public class InitializerGame {
 
 
 }
+*/
+//TODO удалить

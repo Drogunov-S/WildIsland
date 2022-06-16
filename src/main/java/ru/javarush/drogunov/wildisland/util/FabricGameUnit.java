@@ -2,8 +2,8 @@ package ru.javarush.drogunov.wildisland.util;
 
 import lombok.SneakyThrows;
 import ru.javarush.drogunov.wildisland.Constants;
-import ru.javarush.drogunov.wildisland.enity.GameUnit;
-import ru.javarush.drogunov.wildisland.enity.annotations.Populations;
+import ru.javarush.drogunov.wildisland.annotations.Populations;
+import ru.javarush.drogunov.wildisland.enity.animals.GameUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class FabricGameUnit {
                 units.add((GameUnit) unit.getConstructor().newInstance());
             }
         }
-    System.out.println(units);
+
         return units;
     }
 

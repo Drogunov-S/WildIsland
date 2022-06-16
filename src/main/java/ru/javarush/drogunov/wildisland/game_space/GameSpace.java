@@ -1,8 +1,23 @@
 package ru.javarush.drogunov.wildisland.game_space;
 
 
+import java.util.Set;
+
 public class GameSpace {
     private GameSpace gameSpace;
+    private GameSettings gameSettings;
+    private Cell[][] space;
+
+
+    public GameSpace(GameSettings gameSettings) {
+        this.gameSettings = gameSettings;
+        space = new Cell[gameSettings.getWidth()][gameSettings.getLength()];
+    }
+
+    public GameSpace() {
+
+    }
+
 
     public Cell[][] getSpace() {
         return space;
@@ -12,39 +27,32 @@ public class GameSpace {
         return space[x][y];
     }
 
-    private Cell[][] space;
-
-    public GameSpace() {
-        getInstance();
-    }
-
-    private GameSpace(GameSettings gameSettings) {
-        int x = GameSettings.getInstance().getWidth();
-        int y = GameSettings.getInstance().getLength();
-        space = new Cell[x][y];
-    }
-
-    public static GameSpace getInstance() {
-        System.out.println("game space");
-        if (gameSpace == null) {
-            gameSpace = new GameSpace(GameSettings.getInstance());
-            return gameSpace;
-        }
-        return gameSpace;
-    }
-
 
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         for (Cell[] cells : space) {
+            str.append( "|");
             for (Cell cell : cells) {
-                if (cell == null) {
-                    return "| пусто |";
+                str.append(" + ");
+                Set<String> nameUnits = cell.nameUnitsOnCell();
+                if (nameUnits == null) {
+                    return "пусто";
                 }
-                str.append("| "+ cell.gameUnitListOnCell  + " |");
+                for (String nameUnit : nameUnits) {
+                    str.append(" ").append(nameUnit.substring(0, 3)).append(" ");
+                }
+                str.append(" + ");
+                /*List<GameUnit> gameUnitListOnCell = cell.getGameUnitListOnCell();
+                if (gameUnitListOnCell.size() == 0) {
+                    return "пусто";
+                }
+                for (GameUnit gameUnit : gameUnitListOnCell) {
+                    String substring = gameUnit.getClass().getSimpleName().substring(0, 3);
+                    str.append(" ").append(substring).append(" ");
+                }*/
             }
-            str.append("\n");
+            str.append("|\n");
         }
         return str.toString();
     }

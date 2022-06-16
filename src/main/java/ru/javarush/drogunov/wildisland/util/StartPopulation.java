@@ -1,28 +1,30 @@
-/*
 package ru.javarush.drogunov.wildisland.util;
 
 import ru.javarush.drogunov.wildisland.game_space.Cell;
 import ru.javarush.drogunov.wildisland.game_space.GameSpace;
 
 public class StartPopulation {
-    private GameSpace gameSpace = GameSpace.getInstance();
+    GameSpace gameSpace;
 
 
-    //TODO закончил тут не работает инициализация мира
-    public StartPopulation() {
-        System.out.println("create");
+    public StartPopulation(GameSpace gameSpace) {
+        this.gameSpace = gameSpace;
+    }
+
+    public void create() {
         Cell[][] space = gameSpace.getSpace();
         for (int i = 0; i < space.length; i++) {
             for (int j = 0; j < space[i].length; j++) {
-                space[i][j] = new Cell(i, j, FabricGameUnit.getAllRandomCountGameUnit());
+                space[i][j] = new Cell(i, j, FabricGameUnit.getAllRandomCountGameUnit(), gameSpace);
             }
         }
+    }
+}
 
 
 
-
-*/
 /*
+
         for (Class aClass : Constants.GAME_UNITS) {
             Populations declaredAnnotation = (Populations) aClass.getDeclaredAnnotation(Populations.class);
             if (aClass.isAnnotationPresent(Populations.class)) {
@@ -34,7 +36,7 @@ public class StartPopulation {
                     }
                 }
             }
-        }*//*
+        }
 
 
 
@@ -42,4 +44,5 @@ public class StartPopulation {
 
 }
 */
+
 //TODO удалить

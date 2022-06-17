@@ -4,7 +4,7 @@ import ru.javarush.drogunov.wildisland.enity.GameUnit;
 import ru.javarush.drogunov.wildisland.annotations.UnitSetting;
 import ru.javarush.drogunov.wildisland.enity.plants.Plant;
 
-@UnitSetting(name = "Растения", icon = "", weight = 1, maxPopulations = 200)
+@UnitSetting(name = "Растения", icon = "\uD83C\uDF3F", weight = 1, maxPopulations = 200)
 public class SimplePlant extends Plant {
     @Override
     public void multiply(GameUnit one, GameUnit two) {

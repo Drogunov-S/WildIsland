@@ -44,5 +44,3 @@ public class StartPopulation {
 
 }
 */
-
-//TODO удалить

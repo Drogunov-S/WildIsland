@@ -2,7 +2,7 @@ package ru.javarush.drogunov.wildisland.enity.animals.predators;
 
 import ru.javarush.drogunov.wildisland.annotations.UnitSetting;
 
-@UnitSetting(name = "Волк", icon = "", weight = 50, maxPopulations = 30, maxSteps = 3, satiety = 8)
+@UnitSetting(name = "Волк", icon = "\uD83D\uDC3A", weight = 50, maxPopulations = 30, maxSteps = 3, satiety = 8)
 public class Wolf extends Predator {
 
 

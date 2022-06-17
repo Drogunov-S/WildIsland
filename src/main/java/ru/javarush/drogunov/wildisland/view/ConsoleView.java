@@ -40,7 +40,6 @@ public class ConsoleView implements View {
                         }
                     }
                 }
-//                System.out.print(map.size() + " k v "+  residents.values().size() + " ");
             }
         }
         System.out.println(map);
@@ -48,12 +47,11 @@ public class ConsoleView implements View {
     }
 
     @Override
+            //TODO разобрать и понять
     public String showMap() {
         Cell[][] cells = gameSpace.getSpace();
         final int rows = cells.length;
         final int cols = cells[0].length;
-        int oneCellWidth = positions + 1;
-        int width = oneCellWidth * cols + 2;
         StringBuilder out = new StringBuilder();
         for (int row = 0; row < rows; row++) {
             out.append(row == 0
@@ -76,7 +74,7 @@ public class ConsoleView implements View {
                 .filter((list) -> list.size() > 0)
                 .sorted((o1, o2) -> o2.size() - o1.size())
                 .limit(positions)
-                .map(list -> list.stream().findAny().get().getClass().getSimpleName().substring(0, 1))
+                .map(list -> list.stream().findAny().get().toString().substring(0, 1))
                 .map(Object::toString)
                 .collect(Collectors.joining());
     }

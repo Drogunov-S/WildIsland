@@ -22,6 +22,7 @@ public class Runner {
         startPopulation.create();
         ConsoleView consoleView = new ConsoleView(gameSpace);
         consoleView.showStatistics();
+        consoleView.showMap();
         Cell[][] space = gameSpace.getSpace();
 //        count(space);
 
@@ -38,8 +39,7 @@ public class Runner {
 
 
         for (Cell[] cells : space) {
-            for (int i = 0; i < cells.length; i++) {
-                Cell cell = cells[i];
+            for (Cell cell : cells) {
                 List<GameUnit> gameUnitListOnCell = cell.getGameUnitListOnCell();
                 for (GameUnit gameUnit : gameUnitListOnCell) {
 //                    System.out.println(gameUnit.getId());

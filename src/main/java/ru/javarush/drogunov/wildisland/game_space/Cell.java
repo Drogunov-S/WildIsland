@@ -1,7 +1,7 @@
 package ru.javarush.drogunov.wildisland.game_space;
 
 import lombok.Getter;
-import ru.javarush.drogunov.wildisland.enity.animals.GameUnit;
+import ru.javarush.drogunov.wildisland.enity.GameUnit;
 
 import java.lang.reflect.Type;
 import java.util.*;

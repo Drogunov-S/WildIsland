@@ -7,8 +7,13 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Populations {
-    int min() default 0;
-    int max();
+public @interface UnitSetting {
+    int minPopulations() default 0;
+    int maxPopulations();
+    String icon();
+    String name();
+    double weight();
+    double satiety() default 0;
+    int maxSteps() default 0;
 
 }

@@ -1,11 +1,9 @@
 package ru.javarush.drogunov.wildisland.enity.animals.predators;
 
-import ru.javarush.drogunov.wildisland.enity.animals.GameUnit;
-import ru.javarush.drogunov.wildisland.annotations.Populations;
-import ru.javarush.drogunov.wildisland.interfaces.Actionable;
+import ru.javarush.drogunov.wildisland.annotations.UnitSetting;
 
-@Populations(max = 20)
-public class Eagle extends GameUnit implements Actionable {
+@UnitSetting(name = "Орел", icon = "", weight = 6, maxPopulations = 20, maxSteps = 3, satiety = 1)
+public class Eagle extends Predator {
 
 /*    public Eagle(int x, int y) {
         super(x, y);

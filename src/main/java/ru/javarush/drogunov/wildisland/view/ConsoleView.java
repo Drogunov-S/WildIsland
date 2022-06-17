@@ -1,6 +1,6 @@
 package ru.javarush.drogunov.wildisland.view;
 
-import ru.javarush.drogunov.wildisland.enity.animals.GameUnit;
+import ru.javarush.drogunov.wildisland.enity.GameUnit;
 import ru.javarush.drogunov.wildisland.game_space.Cell;
 import ru.javarush.drogunov.wildisland.game_space.GameSpace;
 

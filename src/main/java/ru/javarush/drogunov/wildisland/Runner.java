@@ -1,9 +1,9 @@
 package ru.javarush.drogunov.wildisland;
 
-import ru.javarush.drogunov.wildisland.enity.animals.GameUnit;
-import ru.javarush.drogunov.wildisland.enity.animals.herbivors.Caterpillar;
-import ru.javarush.drogunov.wildisland.enity.animals.herbivors.Rabbit;
-import ru.javarush.drogunov.wildisland.enity.animals.herbivors.WildBoard;
+import ru.javarush.drogunov.wildisland.enity.GameUnit;
+import ru.javarush.drogunov.wildisland.enity.animals.herbivores.Caterpillar;
+import ru.javarush.drogunov.wildisland.enity.animals.herbivores.Rabbit;
+import ru.javarush.drogunov.wildisland.enity.animals.herbivores.Board;
 import ru.javarush.drogunov.wildisland.enity.animals.predators.Bear;
 import ru.javarush.drogunov.wildisland.game_space.Cell;
 import ru.javarush.drogunov.wildisland.game_space.GameSettings;
@@ -23,7 +23,7 @@ public class Runner {
         ConsoleView consoleView = new ConsoleView(gameSpace);
         consoleView.showStatistics();
         Cell[][] space = gameSpace.getSpace();
-        count(space);
+//        count(space);
 
 
 //        System.out.println(gameSpace);
@@ -43,7 +43,7 @@ public class Runner {
                 List<GameUnit> gameUnitListOnCell = cell.getGameUnitListOnCell();
                 for (GameUnit gameUnit : gameUnitListOnCell) {
 //                    System.out.println(gameUnit.getId());
-                    if (gameUnit.getClass().equals(WildBoard.class)) {
+                    if (gameUnit.getClass().equals(Board.class)) {
                         wild++;
                     }
                     if (gameUnit.getClass().equals(Rabbit.class)) {

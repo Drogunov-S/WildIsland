@@ -1,6 +1,6 @@
 package ru.javarush.drogunov.wildisland;
 
-import ru.javarush.drogunov.wildisland.enity.animals.herbivors.*;
+import ru.javarush.drogunov.wildisland.enity.animals.herbivores.*;
 import ru.javarush.drogunov.wildisland.enity.animals.predators.*;
 import ru.javarush.drogunov.wildisland.enity.plants.view_plants.SimplePlant;
 
@@ -23,7 +23,7 @@ public class Constants {
         GAME_UNITS.add(Mouse.class);
         GAME_UNITS.add(Goat.class);
         GAME_UNITS.add(Sheep.class);
-        GAME_UNITS.add(WildBoard.class);
+        GAME_UNITS.add(Board.class);
         GAME_UNITS.add(Buffalo.class);
         GAME_UNITS.add(Duck.class);
         GAME_UNITS.add(Caterpillar.class);

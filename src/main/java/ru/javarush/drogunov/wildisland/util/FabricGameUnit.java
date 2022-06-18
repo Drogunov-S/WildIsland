@@ -13,7 +13,7 @@ public class FabricGameUnit {
     @SneakyThrows
     public static List<GameUnit> getAllRandomCountGameUnit() {
         List<GameUnit> units = new ArrayList<>();
-        for (Class unit : Constants.GAME_UNITS) {
+        for (Class unit : Constants.GAME_UNITS.keySet()) {
             UnitSetting declaredAnnotation = (UnitSetting) unit.getDeclaredAnnotation(UnitSetting.class);
             int count = Randomizer.getRandomInteger(declaredAnnotation.maxPopulations());
             for (int i = 0; i < count; i++) {

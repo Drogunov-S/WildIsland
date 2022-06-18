@@ -5,13 +5,12 @@ import ru.javarush.drogunov.wildisland.game_space.Cell;
 import ru.javarush.drogunov.wildisland.game_space.GameSpace;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-//Я переделаю)
 public class ConsoleView implements View {
     private final GameSpace gameSpace;
     private final int positions = 3;
@@ -25,29 +24,43 @@ public class ConsoleView implements View {
     @Override
     public String showStatistics() {
         Cell[][] cells = gameSpace.getSpace();
-        Map<String, Integer> map = new HashMap<>();
+        //TODO не могу как передать компаратор для сортировки по значению
+        Map<String, Integer> statisticsMap = new TreeMap<>();
         for (Cell[] row : cells) {
             for (Cell cell : row) {
+                //TODO еще раз понять что такое Type
                 Map<Type, Set<GameUnit>> residents = cell.getMapGameUnits();
-                for (Set<GameUnit> s : residents.values()) {
-                    if (s.size() > 0) {
-                        String gameUnitName = s.stream().findAny().get().toString();
-                        if (map.containsKey(gameUnitName)) {
-                            Integer oldCount = map.get(gameUnitName);
-                            map.put(gameUnitName, s.size() + oldCount);
+                for (Set<GameUnit> unitsOnCell : residents.values()) {
+                    if (unitsOnCell.size() > 0) {
+                        String gameUnitName = unitsOnCell.stream().findAny().get().toString();
+                        if (statisticsMap.containsKey(gameUnitName)) {
+                            Integer oldCount = statisticsMap.get(gameUnitName);
+                            statisticsMap.put(gameUnitName, unitsOnCell.size() + oldCount);
                         } else {
-                            map.put(s.stream().findAny().get().toString(), s.size());
+                            statisticsMap.put(unitsOnCell.stream().findAny().get().toString(), unitsOnCell.size());
                         }
                     }
                 }
             }
         }
-        System.out.println(map);
-        return map.toString();
+        StringBuilder resultString = new StringBuilder();
+        int count = 0;
+
+        for (Map.Entry<String, Integer> units : statisticsMap.entrySet()) {
+            int columns = 1;
+            if (count == columns) {
+                resultString.append('\n');
+                count = 0;
+            }
+            resultString.append(units.getKey()).append(" = ").append(units.getValue()).append(" ");
+            count++;
+        }
+
+        return resultString.toString();
     }
 
     @Override
-            //TODO разобрать и понять
+    //TODO разобрать и понять
     public String showMap() {
         Cell[][] cells = gameSpace.getSpace();
         final int rows = cells.length;

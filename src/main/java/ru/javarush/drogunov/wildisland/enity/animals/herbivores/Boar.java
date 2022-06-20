@@ -1,10 +1,11 @@
 package ru.javarush.drogunov.wildisland.enity.animals.herbivores;
 
 import ru.javarush.drogunov.wildisland.annotations.UnitSetting;
+import ru.javarush.drogunov.wildisland.enity.Limits;
 
 @UnitSetting(name = "Кабан", icon = "\uD83D\uDC03", weight = 400, maxPopulations = 50, maxSteps = 2, satiety = 50)
 public class Boar extends Herbivores {
-/*  public WildBoard(int x, int y) {
-        super(x, y);dfs
-    }*/
+    public Boar(String name, String icon, double weight, Limits limits) {
+        super(name, icon, weight, limits);
+    }
 }

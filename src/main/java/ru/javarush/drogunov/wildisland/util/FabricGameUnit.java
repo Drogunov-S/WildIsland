@@ -14,21 +14,13 @@ public class FabricGameUnit {
     public static List<GameUnit> getAllRandomCountGameUnit() {
         List<GameUnit> units = new ArrayList<>();
         for (Class unit : Constants.GAME_UNITS.keySet()) {
-            UnitSetting declaredAnnotation = (UnitSetting) unit.getDeclaredAnnotation(UnitSetting.class);
-            int count = Randomizer.getRandomInteger(declaredAnnotation.maxPopulations());
+            UnitSetting settings = (UnitSetting) unit.getDeclaredAnnotation(UnitSetting.class);
+            int count = Randomizer.getRandomInteger(settings.maxPopulations());
             for (int i = 0; i < count; i++) {
                 units.add((GameUnit) unit.getConstructor().newInstance());
             }
         }
-        /*units.add(new WildBoard());
-        units.add(new WildBoard());
-        units.add(new WildBoard());
-        units.add(new WildBoard());
-        units.add(new WildBoard());
-        units.add(new Rabbit());
-        units.add(new Rabbit());
-        units.add(new Rabbit());
-        units.add(new Rabbit());*/
+
         return units;
     }
 

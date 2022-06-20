@@ -10,9 +10,6 @@ import java.util.*;
 public class Constants {
 
     public static final Map<Class<?>, String> GAME_UNITS = new HashMap<>();
-    //TODO СМЕНИТЬ НА HASHMAP
-    public static final Map<Class<?>, Map<Class<?>, Integer>> PROBABILITY_EATING = new TreeMap<>(Comparator.comparing(Class::getSimpleName));
-
 
     static {
         GAME_UNITS.put(Wolf.class, "10 Horse 15 Deer 60 Rabbit 80 Mouse 60 Goat 70 Sheep 15 Board 10 Buffalo 40 Duck");
@@ -32,6 +29,8 @@ public class Constants {
         GAME_UNITS.put(Caterpillar.class, "100 SimplePlant");
         GAME_UNITS.put(SimplePlant.class, "");
     }
+
+    public static final Map<Class<?>, Map<Class<?>, Integer>> PROBABILITY_EATING = new HashMap<>();
 
     static {
         GAME_UNITS

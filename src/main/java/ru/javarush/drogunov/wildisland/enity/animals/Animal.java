@@ -1,6 +1,7 @@
 package ru.javarush.drogunov.wildisland.enity.animals;
 
 import ru.javarush.drogunov.wildisland.enity.GameUnit;
+import ru.javarush.drogunov.wildisland.enity.Limits;
 import ru.javarush.drogunov.wildisland.game_space.Cell;
 import ru.javarush.drogunov.wildisland.interfaces.Animalseble;
 import ru.javarush.drogunov.wildisland.interfaces.Eating;
@@ -11,9 +12,9 @@ public abstract class Animal
         extends GameUnit
         implements Animalseble, Multiple, Eating {
 
-    private  int satiety;
-    private  int maxSteps;
-
+    public Animal(String name, String icon, double weight, Limits limits) {
+        super(name, icon, weight, limits);
+    }
 
     @Override
     public void eat(GameUnit one, GameUnit two) {

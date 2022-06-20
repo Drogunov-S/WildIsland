@@ -1,12 +1,11 @@
 package ru.javarush.drogunov.wildisland.enity.animals.predators;
 
 import ru.javarush.drogunov.wildisland.annotations.UnitSetting;
+import ru.javarush.drogunov.wildisland.enity.Limits;
 
 @UnitSetting(name = "Волк", icon = "\uD83D\uDC3A", weight = 50, maxPopulations = 30, maxSteps = 3, satiety = 8)
 public class Wolf extends Predator {
-
-
- /*   public Wolf(int x, int y) {
-        super(x, y);
-    }*/
+    public Wolf(String name, String icon, double weight, Limits limits) {
+        super(name, icon, weight, limits);
+    }
 }

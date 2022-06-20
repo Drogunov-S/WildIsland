@@ -1,24 +1,24 @@
 package ru.javarush.drogunov.wildisland.servises;
 
-import ru.javarush.drogunov.wildisland.enity.GameUnit;
-import ru.javarush.drogunov.wildisland.enity.animals.Animal;
-import ru.javarush.drogunov.wildisland.enity.plants.Plant;
-import ru.javarush.drogunov.wildisland.game_space.Cell;
-import ru.javarush.drogunov.wildisland.game_space.GameSpace;
+import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
+import ru.javarush.drogunov.wildisland.enity.game_unit.animals.Animal;
+import ru.javarush.drogunov.wildisland.enity.game_unit.plants.Plant;
+import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
+import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
 
 public class Worker implements Runnable {
-    private final GameSpace gameSpace;
+    private final GameMap gameMap;
     private final int time = 1000;
     private final int countTact = 0;
 
 
-    public Worker(GameSpace gameSpace) {
-        this.gameSpace = gameSpace;
+    public Worker(GameMap gameMap) {
+        this.gameMap = gameMap;
     }
 
     @Override
     public void run() {
-        Cell[][] space = gameSpace.getSpace();
+        Cell[][] space = gameMap.getSpace();
         for (Cell[] cells : space) {
             for (Cell cell : cells) {
                 for (GameUnit gameUnit : cell.getGameUnitListOnCell()) {

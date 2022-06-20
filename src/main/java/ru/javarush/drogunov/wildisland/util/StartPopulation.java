@@ -1,21 +1,21 @@
 package ru.javarush.drogunov.wildisland.util;
 
-import ru.javarush.drogunov.wildisland.game_space.Cell;
-import ru.javarush.drogunov.wildisland.game_space.GameSpace;
+import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
+import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
 
 public class StartPopulation {
-    GameSpace gameSpace;
+    GameMap gameMap;
 
 
-    public StartPopulation(GameSpace gameSpace) {
-        this.gameSpace = gameSpace;
+    public StartPopulation(GameMap gameMap) {
+        this.gameMap = gameMap;
     }
 
     public void create() {
-        Cell[][] space = gameSpace.getSpace();
+        Cell[][] space = gameMap.getSpace();
         for (int i = 0; i < space.length; i++) {
             for (int j = 0; j < space[i].length; j++) {
-                space[i][j] = new Cell(i, j, FabricGameUnit.getAllRandomCountGameUnit(), gameSpace);
+                space[i][j] = new Cell(i, j, FactoryGameUnit.getAllRandomCountGameUnit(), gameMap);
             }
         }
     }

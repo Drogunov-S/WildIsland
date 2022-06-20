@@ -1,8 +1,8 @@
 package ru.javarush.drogunov.wildisland.view;
 
-import ru.javarush.drogunov.wildisland.enity.GameUnit;
-import ru.javarush.drogunov.wildisland.game_space.Cell;
-import ru.javarush.drogunov.wildisland.game_space.GameSpace;
+import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
+import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
+import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -12,18 +12,18 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ConsoleView implements View {
-    private final GameSpace gameSpace;
+    private final GameMap gameMap;
     private final int positions = 3;
     private final String border = "═".repeat(positions);
 
-    public ConsoleView(GameSpace gameSpace) {
-        this.gameSpace = gameSpace;
+    public ConsoleView(GameMap gameMap) {
+        this.gameMap = gameMap;
     }
 
 
     @Override
     public String showStatistics() {
-        Cell[][] cells = gameSpace.getSpace();
+        Cell[][] cells = gameMap.getSpace();
         //TODO не могу как передать компаратор для сортировки по значению
         Map<String, Integer> statisticsMap = new TreeMap<>();
         for (Cell[] row : cells) {
@@ -62,7 +62,7 @@ public class ConsoleView implements View {
     @Override
     //TODO разобрать и понять
     public String showMap() {
-        Cell[][] cells = gameSpace.getSpace();
+        Cell[][] cells = gameMap.getSpace();
         final int rows = cells.length;
         final int cols = cells[0].length;
         StringBuilder out = new StringBuilder();

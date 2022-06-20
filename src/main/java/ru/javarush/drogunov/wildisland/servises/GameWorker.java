@@ -3,7 +3,7 @@ package ru.javarush.drogunov.wildisland.servises;
 
 import lombok.RequiredArgsConstructor;
 import ru.javarush.drogunov.wildisland.Constants;
-import ru.javarush.drogunov.wildisland.enity.GameUnit;
+import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 import ru.javarush.drogunov.wildisland.game_space.GameSpace;
 
 import java.util.List;

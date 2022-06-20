@@ -1,9 +1,9 @@
 package ru.javarush.drogunov.wildisland;
 
-import ru.javarush.drogunov.wildisland.enity.animals.Animal;
-import ru.javarush.drogunov.wildisland.enity.animals.herbivores.*;
-import ru.javarush.drogunov.wildisland.enity.animals.predators.*;
-import ru.javarush.drogunov.wildisland.enity.plants.view_plants.SimplePlant;
+import ru.javarush.drogunov.wildisland.enity.game_unit.animals.Animal;
+import ru.javarush.drogunov.wildisland.enity.game_unit.animals.herbivores.*;
+import ru.javarush.drogunov.wildisland.enity.game_unit.animals.predators.*;
+import ru.javarush.drogunov.wildisland.enity.game_unit.plants.type_plants.SimplePlant;
 
 import java.util.*;
 

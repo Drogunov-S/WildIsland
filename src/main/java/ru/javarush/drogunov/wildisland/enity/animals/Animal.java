@@ -11,21 +11,25 @@ public abstract class Animal
         extends GameUnit
         implements Animalseble, Multiple, Eating {
 
-    private int satiety;
-    private int maxSteps;
+    private  int satiety;
+    private  int maxSteps;
+
 
     @Override
     public void eat(GameUnit one, GameUnit two) {
+        System.out.println("Animal eat " + Thread.currentThread().getName());
+
+
 
     }
 
     @Override
-    public void multiply(GameUnit one, GameUnit two) {
-
+    public void multiply(Cell cell) {
+        System.out.println("Animal multiply " + Thread.currentThread().getName());
     }
 
     @Override
     public void walk(Cell current, Cell target) {
-
+        System.out.println("Animal walk " + Thread.currentThread().getName());
     }
 }

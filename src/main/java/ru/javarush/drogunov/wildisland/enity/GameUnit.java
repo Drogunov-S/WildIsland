@@ -14,8 +14,11 @@ public abstract class GameUnit {
  //tostring
     private static final AtomicLong idcur = new AtomicLong(System.currentTimeMillis());
     private final long id = idcur.incrementAndGet();
+
     private String icon;
     private double weight;
+
+
 
     @Override
     public String toString() {

@@ -2,8 +2,12 @@ package ru.javarush.drogunov.wildisland;
 
 import ru.javarush.drogunov.wildisland.game_space.GameSettings;
 import ru.javarush.drogunov.wildisland.game_space.GameSpace;
+import ru.javarush.drogunov.wildisland.servises.Worker;
 import ru.javarush.drogunov.wildisland.util.StartPopulation;
 import ru.javarush.drogunov.wildisland.view.ConsoleView;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Runner {
     public static void main(String[] args) {
@@ -16,6 +20,16 @@ public class Runner {
 
         ConsoleView consoleView = new ConsoleView(gameSpace);
         System.out.println(consoleView.showStatistics());
+
+        /*Thread thread = new Thread(new Worker(gameSpace));
+        thread.start();
+*/
+
+        Worker worker = new Worker(gameSpace);
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
+        executorService.submit(worker);
+        executorService.shutdown();
+
 //        consoleView.showMap();
     }
 

@@ -17,7 +17,7 @@ public abstract class Animal
     }
 
     @Override
-    public void eat(GameUnit one, GameUnit two) {
+    public void eat() {
         System.out.println("Animal eat " + Thread.currentThread().getName());
 
 
@@ -30,7 +30,7 @@ public abstract class Animal
     }
 
     @Override
-    public void walk(Cell current, Cell target) {
+    public void walk(Cell target) {
         System.out.println("Animal walk " + Thread.currentThread().getName());
     }
 }

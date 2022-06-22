@@ -1,7 +1,10 @@
 package ru.javarush.drogunov.wildisland.enity.game_space;
 
 
-import java.util.Arrays;
+import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
+
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class GameMap {
     private GameSettings gameSettings;
@@ -24,6 +27,24 @@ public class GameMap {
 
     public Cell getCell(int x, int y) {
         return space[x][y];
+    }
+
+
+    public Map<Type, Set<GameUnit>> getMapGameUnits(){
+        Map<Type, Set<GameUnit>> result = new HashMap<>();
+        Arrays.stream(space)
+                .forEach(lines -> Arrays.stream(lines)
+                        .forEach(cell -> result.putAll(cell.getMapGameUnits())));
+        return result;
+    }
+
+
+    public Set<GameUnit> getSetUnits() {
+        Set<GameUnit> setUnitsOnGameMap = new HashSet<>();
+        Arrays.stream(space)
+                .forEach(lines -> Arrays.stream(lines)
+                        .forEach(cell -> setUnitsOnGameMap.addAll(cell.getSetUnits())));
+        return setUnitsOnGameMap;
     }
 
 

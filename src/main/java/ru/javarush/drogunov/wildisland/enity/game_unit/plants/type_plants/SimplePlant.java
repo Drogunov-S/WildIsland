@@ -13,7 +13,7 @@ public class SimplePlant extends Plant {
 
     @Override
     public void multiply(Cell cell) {
-
+        System.out.println("Plants ");
     }
 
 }

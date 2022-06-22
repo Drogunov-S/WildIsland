@@ -47,7 +47,7 @@ public class ConsoleView implements View {
         int count = 0;
 
         for (Map.Entry<String, Integer> units : statisticsMap.entrySet()) {
-            int columns = 1;
+            int columns = 2;
             if (count == columns) {
                 resultString.append('\n');
                 count = 0;
@@ -55,7 +55,7 @@ public class ConsoleView implements View {
             resultString.append(units.getKey()).append(" = ").append(units.getValue()).append(" ");
             count++;
         }
-
+        System.out.println(resultString);
         return resultString.toString();
     }
 

@@ -3,12 +3,13 @@ package ru.javarush.drogunov.wildisland.enity.game_unit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import ru.javarush.drogunov.wildisland.exceptions.CloneUnitException;
+import ru.javarush.drogunov.wildisland.interfaces.Multiple;
 
 import java.util.concurrent.atomic.AtomicLong;
 
 @Data
 @EqualsAndHashCode
-public abstract class GameUnit implements Cloneable {
+public abstract class GameUnit implements Cloneable, Multiple {
 
     private static final AtomicLong indicator = new AtomicLong(System.currentTimeMillis());
     private final long id = indicator.incrementAndGet();
@@ -37,6 +38,7 @@ public abstract class GameUnit implements Cloneable {
 
     @Override
     public GameUnit clone() {
+        //TODO переделать на поверхностное клонирование
         try {
             return (GameUnit) super.clone();
         } catch (CloneNotSupportedException e) {

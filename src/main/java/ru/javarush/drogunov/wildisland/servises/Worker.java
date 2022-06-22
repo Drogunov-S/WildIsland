@@ -1,3 +1,4 @@
+/*
 package ru.javarush.drogunov.wildisland.servises;
 
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
@@ -21,7 +22,7 @@ public class Worker implements Runnable {
         Cell[][] space = gameMap.getSpace();
         for (Cell[] cells : space) {
             for (Cell cell : cells) {
-                for (GameUnit gameUnit : cell.getGameUnitListOnCell()) {
+                for (GameUnit gameUnit : cell.getGameUnitList()) {
                     if (gameUnit instanceof Animal animal) {
                         animal.eat(gameUnit, gameUnit);
                         animal.walk(cell, cell);
@@ -37,3 +38,4 @@ public class Worker implements Runnable {
 
     }
 }
+*/

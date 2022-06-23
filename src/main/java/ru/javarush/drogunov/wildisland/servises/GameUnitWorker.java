@@ -27,13 +27,16 @@ public class GameUnitWorker implements Runnable {
                 Set<GameUnit> gameUnits = cell.getMapGameUnits().get(type);
                 for (GameUnit gameUnit : gameUnits) {
                     if (gameUnit instanceof Animal animal) {
-                        animal.eat();
+                        /*animal.eat();
                         animal.walk(cell);
+                        animal.multiply(cell);*/
+//
+//
 //                        Cell destination = animal.move(cell);
                         //animal.eat(destination);
                         //animal.spawn(destination);
                     } else {
-                        prototype.multiply(cell);
+//                        prototype.multiply(cell);
                     }
                 }
             }

@@ -16,9 +16,11 @@ public abstract class Animal
         super(name, icon, weight, limits);
     }
 
+
+
     @Override
     public void eat() {
-        System.out.println("Animal eat " + Thread.currentThread().getName());
+        System.out.println(super.getName() + " eat " + Thread.currentThread().getName());
 
 
 
@@ -26,11 +28,11 @@ public abstract class Animal
 
     @Override
     public void multiply(Cell cell) {
-        System.out.println("Animal multiply " + Thread.currentThread().getName());
+        System.out.println(super.getName() + " multiply " + Thread.currentThread().getName());
     }
 
     @Override
     public void walk(Cell target) {
-        System.out.println("Animal walk " + Thread.currentThread().getName());
+        System.out.println(super.getName() + " walk " + Thread.currentThread().getName());
     }
 }

@@ -25,6 +25,10 @@ public abstract class GameUnit implements Cloneable, Multiple {
         this.limits = limits;
     }
 
+    /*public GameUnit(GameUnit gameUnit) {
+
+    }*/
+
     @Override
     public String toString() {
         return name + " " + icon;

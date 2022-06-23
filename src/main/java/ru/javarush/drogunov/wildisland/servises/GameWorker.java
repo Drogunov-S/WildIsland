@@ -28,7 +28,7 @@ public class GameWorker extends Thread {
                 .toList();
 
         mainPool.scheduleAtFixedRate(() -> {
-            ExecutorService servicePool = Executors.newFixedThreadPool(4);
+            ExecutorService servicePool = Executors.newFixedThreadPool(15);
             workers.forEach(servicePool::submit);
             servicePool.shutdown();
             try {

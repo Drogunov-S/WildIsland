@@ -45,7 +45,9 @@ public class GameMap {
         Set<GameUnit> setUnitsOnGameMap = new HashSet<>();
         Arrays.stream(space)
                 .forEach(lines -> Arrays.stream(lines)
-                        .forEach(cell -> setUnitsOnGameMap.addAll(cell.getSetUnits())));
+                        .forEach(cell -> cell.getUnitsMap()
+                                .values()
+                                .forEach(setUnitsOnGameMap::addAll)));
         return setUnitsOnGameMap;
     }
 

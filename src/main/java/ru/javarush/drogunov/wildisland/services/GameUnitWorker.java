@@ -5,8 +5,6 @@ import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 import ru.javarush.drogunov.wildisland.enity.game_unit.animals.Animal;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -68,23 +66,17 @@ public class GameUnitWorker implements Runnable {
     }
 
     private void progressOnOneCell(Cell cell) {
+        Set<GameUnit> allUnitsOnCell = cell.getUnitsMap().get(prototype.getSimpleName());
         cell.lockCell();
 
         try {
-            Iterator<GameUnit> iterator = cell.getGameUnitList().iterator();
-            Set<GameUnit> set = new HashSet<>();
-            while (iterator.hasNext()) {
-                GameUnit next = iterator.next();
-                if (next.getClass() == prototype){
-                    set.add(next);
-                }
-            }
-            set.forEach(gameUnit -> {
-                Task task = new Task(gameUnit, unit -> {
+            allUnitsOnCell.forEach(typedUnit -> {
+                Task task = new Task(typedUnit, unit -> {
                         unit.multiply(cell);
+                        //TODO зависаю после определенного цикла
                 if (unit instanceof Animal animal) {
 //                            animal.eat(cell);
-//                            animal.walk(cell);
+                            animal.walk(cell);
                 }
                 });
                     tasks.add(task);

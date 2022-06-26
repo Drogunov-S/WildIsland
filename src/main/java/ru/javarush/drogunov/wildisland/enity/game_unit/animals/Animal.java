@@ -7,8 +7,8 @@ import ru.javarush.drogunov.wildisland.interfaces.Eating;
 import ru.javarush.drogunov.wildisland.interfaces.Walkable;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.locks.Lock;
 
 import static ru.javarush.drogunov.wildisland.Constants.PROBABILITY_EATING;
@@ -24,8 +24,8 @@ public abstract class Animal
 
 
     @Override
-    public void eat(Cell currentCell) {
-        Lock lock = currentCell.getLock();
+    public void eat(Cell cell) {
+        Lock lock = cell.getLock();
         try {
             lock.lockInterruptibly();
         } catch (InterruptedException e) {
@@ -33,13 +33,12 @@ public abstract class Animal
         }
 
         try {
-
             Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(this.getClass());
-            List<GameUnit> gameUnitList = currentCell.getGameUnitList();
+            Map<String, Set<GameUnit>> gameUnitList = cell.getUnitsMap();
 
             for (var pair : targetUnits.entrySet()) {
                 Class<?> target = pair.getKey();
-                Iterator<GameUnit> iterator1 = gameUnitList.iterator();
+                Iterator<GameUnit> iterator1 = gameUnitList.get(target.getSimpleName()).iterator();
                 while (iterator1.hasNext()) {
                     GameUnit next = iterator1.next();
                     //TODO включить вероятность съедания
@@ -53,7 +52,7 @@ public abstract class Animal
 
             }
         } finally {
-            currentCell.unlockCell();
+            cell.unlockCell();
         }
     }
 
@@ -90,18 +89,21 @@ public abstract class Animal
     }*/
 
     @Override
-    public void multiply(Cell currentCell) {
-        while (currentCell.getLock().tryLock())
-
-        try {
-            GameUnit partner = currentCell.getPair(this);
-            if (partner != null) {
-                currentCell.getGameUnitList().add(this.clone(this));
+    public void multiply(Cell cell) {
+        cell.lockCell();
+            try {
+                if (cell.isMaxPopulation(this)) {
+                    GameUnit partner = cell.getPair(this);
+                    if (partner != null) {
+                        GameUnit clone = partner.clone(this);
+                        cell.getUnitsMap().get(getType()).add(clone);
+                    }
+                }
+            } finally {
+                cell.unlockCell();
             }
 
-        } finally {
-            currentCell.unlockCell();
-        }
+
 
         /*currentCell.lockCell();
         try {
@@ -122,19 +124,19 @@ public abstract class Animal
     }
 
     @Override
-    public void walk(Cell currentCell) {
-        currentCell.lockCell();
+    public void walk(Cell cell) {
+        cell.lockCell();
         try {
-            currentCell.getGameUnitList().remove(this);
+            cell.getUnitsMap().get(getType()).remove(this);
         } finally {
-            currentCell.unlockCell();
+            cell.unlockCell();
         }
 
-        Cell nextCell = currentCell.getNextCell(this.getLimits().getMaxSteps());
+        Cell nextCell = cell.getNextCell(this.getLimits().getMaxSteps());
         nextCell.lockCell();
 
         try {
-            nextCell.getGameUnitList().add(this);
+            nextCell.getUnitsMap().get(getType()).add(this);
         } finally {
             nextCell.unlockCell();
         }

@@ -11,22 +11,25 @@ import ru.javarush.drogunov.wildisland.exceptions.ConstructorNotFound;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class FactoryGameUnit implements Factory {
 
 
     @Override
     public Cell createCell() {
-        List<GameUnit> unitsOnCell = new ArrayList<>();
+        Cell cell = new Cell();
+        Map<String, Set<GameUnit>> gameUnitList = cell.getUnitsMap();
         for (Class<?> unit : Constants.GAME_UNITS.keySet()) {
+            Set<GameUnit> unitsOnCell = new HashSet<>();
+
             UnitSetting setting = unit.getDeclaredAnnotation(UnitSetting.class);
             String name = setting.name();
             String icon = setting.icon();
             double weight = setting.weight();
             int maxPopulation = setting.maxPopulations();
             Limits limit = new Limits(weight, maxPopulation, setting.maxSteps(), setting.satiety());
+
             Constructor<?> constructor = null;
             try {
                 constructor = unit.getConstructor(String.class, String.class, double.class, Limits.class);
@@ -41,8 +44,9 @@ public class FactoryGameUnit implements Factory {
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
                 throw new ClassNotInstanceException("Class not instance", e);
             }
+            gameUnitList.put(unit.getSimpleName(), unitsOnCell);
         }
-        return new Cell(unitsOnCell);
+        return cell;
     }
 
     //Этот метод был изначально для создания без параметров и конструктором по умолчанию.

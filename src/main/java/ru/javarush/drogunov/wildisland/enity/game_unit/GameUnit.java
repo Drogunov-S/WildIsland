@@ -16,6 +16,9 @@ public abstract class GameUnit implements Cloneable, Multiple {
 
     private static final AtomicLong indicator = new AtomicLong(System.currentTimeMillis());
     private long id = indicator.incrementAndGet();
+
+    private final String type = this.getClass().getSimpleName();
+
     private final String name;
     private final String icon;
     private double weight;
@@ -28,6 +31,10 @@ public abstract class GameUnit implements Cloneable, Multiple {
         this.limits = limits;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public GameUnit(GameUnit gameUnit) {
         //TODO сделать рандомный вес
         this(gameUnit.getName(),
@@ -38,7 +45,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
 
     @Override
     public String toString() {
-        return /*name + " " + */icon;
+        return /*name + " " + */icon + (getLimits().getMaxPopulation()*4);
         //TODO Вопрос тут вместо конкатенации лучше было бы использовать StringBuilder??
     }
 
@@ -49,9 +56,9 @@ public abstract class GameUnit implements Cloneable, Multiple {
 //        if (this instanceof Plant) {
         cell.lockCell();
         try {
-            if (cell.getCountPopulations(this) < this.limits.getMaxPopulation()) {
+            if (cell.isMaxPopulation(this)) {
                 GameUnit clone = this.clone(this);
-                cell.getGameUnitList().add(clone);
+                cell.getUnitsMap().get(getType()).add(clone);
             }
         } finally {
             cell.unlockCell();

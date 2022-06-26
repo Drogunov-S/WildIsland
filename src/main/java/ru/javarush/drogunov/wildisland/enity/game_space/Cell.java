@@ -4,57 +4,44 @@ import lombok.Getter;
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 import ru.javarush.drogunov.wildisland.util.Randomizer;
 
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 public class Cell {
     private final Lock lock = new ReentrantLock(true);
 
     @Getter
-    private volatile List<GameUnit> gameUnitList;
-    private List<Cell> nextCell = new ArrayList<>();
+//    private volatile List<GameUnit> gameUnitList;
+    private final List<Cell> nextCell = new ArrayList<>();
 
-
-    public Cell(List<GameUnit> unitsOnCell) {
-        gameUnitList = unitsOnCell;
-
+    public Map<String, Set<GameUnit>> getUnitsMap() {
+        return unitsOnCell;
     }
 
-    public Set<GameUnit> getSetUnits() {
-        return new HashSet<>(gameUnitList);
-    }
+    private final Map<String, Set<GameUnit>> unitsOnCell = new HashMap<>() {
+        private void checkNull(Object key) {
+            this.putIfAbsent(key.toString(), new HashSet<>());
+        }
 
+        @Override
+        public Set<GameUnit> get(Object key) {
+            checkNull(key);
+            return super.get(key);
+        }
 
-    public void addCell(GameUnit gameUnit) {
-        gameUnitList.add(gameUnit);
-    }
+        @Override
+        public Set<GameUnit> put(String key, Set<GameUnit> value) {
+            checkNull(key);
+            return super.put(key, value);
+        }
+    };
+
 
     public Lock getLock() {
         return lock;
     }
 
-    public Set<String> nameUnitsOnCell() {
-        return getGameUnitList().stream().map(gameUnit -> gameUnit.getClass().getSimpleName()).collect(Collectors.toSet());
-    }
-
-    public Map<Type, Set<GameUnit>> getMapGameUnits() {
-
-        Map<Type, Set<GameUnit>> result = new HashMap<>();
-            for (GameUnit gameUnit : gameUnitList) {
-                Class<? extends GameUnit> aClass = gameUnit.getClass();
-                if (!result.containsKey(aClass)) {
-                    HashSet<GameUnit> typeUnits = new HashSet<>();
-                    typeUnits.add(gameUnit);
-                    result.put(aClass, typeUnits); // не работал из за Set.of?
-                    continue;
-                }
-                result.get(aClass).add(gameUnit);
-            }
-        return result;
-    }
 
     public void linkedCells(GameMap gameMap, int line, int colum) {
         Cell[][] space = gameMap.getSpace();
@@ -80,48 +67,32 @@ public class Cell {
         return getNextCell(maxSteps - 1);
     }
 
- /*   private Set<Cell> getVisitedCell(int maxSteps){
-        if (maxSteps == 0) {
-            return new HashSet<>().add(this);
+    public boolean isMaxPopulation(GameUnit gameUnit) {
+        Set<GameUnit> set = unitsOnCell.get(gameUnit.getType());
+        int size = set.size();
+//        System.out.println(size + " " + gameUnit.getLimits().getMaxPopulation() * 4 + " " + gameUnit.getName());
+        return size <= gameUnit.getLimits().getMaxPopulation();
         }
-        Set<Cell> visitedCells = new HashSet<>();
-        nextCell.stream()
-                .filter()
 
-    }*/
 
-    public int getCountPopulations(GameUnit gameUnit) {
-        return (int) gameUnitList.stream()
-                .filter(unit -> unit.getClass() == gameUnit.getClass())
-                .count();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("| ");
-        for (int i = 0; i < gameUnitList.size(); i++) {
-            GameUnit gameUnit = gameUnitList.get(i);
-            str.append(gameUnit.toString().substring(0, 1));
-        }
-        str.append(" |\n");
-        return str.toString();
-    }
-
-    public GameUnit getPair(GameUnit unit) {
-        for (GameUnit gameUnit : gameUnitList) {
-            if (unit != gameUnit) {
-                return gameUnit;
+        public GameUnit getPair (GameUnit unit){
+            Set<GameUnit> set = unitsOnCell.get(unit.getType());
+            if (set == null || set.size() < 1) {
+                return null;
             }
+            for (GameUnit gameUnit : set) {
+                if (unit != gameUnit) {
+                    return gameUnit;
+                }
+            }
+            return null;
         }
-        return null;
-    }
 
-    public void lockCell() {
-        lock.lock();
-    }
+        public void lockCell () {
+            lock.lock();
+        }
 
-    public void unlockCell() {
-        lock.unlock();
+        public void unlockCell () {
+            lock.unlock();
+        }
     }
-}

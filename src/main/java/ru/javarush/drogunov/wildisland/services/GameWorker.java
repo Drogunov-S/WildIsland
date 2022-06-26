@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import static ru.javarush.drogunov.wildisland.Constants.GAME_UNITS;
 
 public class GameWorker extends Thread {
-    public static final int PERIOD = 3000;
+    public static final int PERIOD = 1000;
     private final Game game;
 
     public GameWorker(Game game) {
@@ -36,7 +36,7 @@ public class GameWorker extends Thread {
                 if (servicePool.awaitTermination(PERIOD, TimeUnit.MILLISECONDS)) {
 //                    game.getView().showMap();
                     game.getView().showStatistics();
-//                    game.getView().showCountCellUnits();
+                    game.getView().showCountCellUnits();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

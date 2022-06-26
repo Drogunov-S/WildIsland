@@ -115,12 +115,8 @@ public abstract class Animal
     @Override
     public void walk(Cell currentCell) {
         Cell nextCell = currentCell.getNextCell(this.getLimits().getMaxSteps());
-        try {
-            currentCell.getLock().lockInterruptibly();
-            nextCell.getLock().lockInterruptibly();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        currentCell.getLock().lock();
+        nextCell.getLock().lock();
         try {
             currentCell.getGameUnitList().remove(this);
             nextCell.getGameUnitList().add(this);

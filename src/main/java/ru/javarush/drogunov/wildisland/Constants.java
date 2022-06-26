@@ -30,6 +30,7 @@ public class Constants {
         GAME_UNITS.put(SimplePlant.class, "");
     }
 
+    //Мапа хранящая 1) все классы 2) мапа из (Класс цели, вероятности съедания)
     public static final Map<Class<?>, Map<Class<?>, Integer>> PROBABILITY_EATING = new HashMap<>();
 
     static {

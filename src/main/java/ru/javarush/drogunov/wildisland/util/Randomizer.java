@@ -1,14 +1,16 @@
 package ru.javarush.drogunov.wildisland.util;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Randomizer {
     public static int getRandomInteger(int to) {
-        return new Random().nextInt(to);
+        return ThreadLocalRandom.current().nextInt(to);
     }
-    public static int getRandomInteger(int from, int to) {
-        return new Random().nextInt(from, to);
+    public static double getRandomInteger(double to) {
+        return ThreadLocalRandom.current().nextDouble(to);
     }
 
-
+    public static boolean getResult(int probability) {
+        return ThreadLocalRandom.current().nextInt(0,100) <= probability;
+    }
 }

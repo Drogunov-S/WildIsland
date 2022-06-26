@@ -4,4 +4,6 @@ public interface View {
     String showStatistics();
 
     String showMap();
+
+    String showCountCellUnits();
 }

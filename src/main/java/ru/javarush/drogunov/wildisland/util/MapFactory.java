@@ -21,13 +21,22 @@ public class MapFactory {
         for (int i = 0; i < space.length; i++) {
             Cell[] cells = space[i];
             for (int j = 0; j < cells.length; j++) {
-                space[i][j] = factory.createCell();
+                Cell cell = factory.createCell();
+                space[i][j] = cell;
             }
         }
+        createLinkedCells(gameMap);
         return gameMap;
-
     }
 
+    private void createLinkedCells(GameMap gameMap) {
+        Cell[][] space = gameMap.getSpace();
+        for (int i = 0; i < space.length; i++) {
+            for (int j = 0; j < space[i].length; j++) {
+                space[i][j].linkedCells(gameMap, i, j);
+            }
+        }
+    }
     /*public void create() {
         Cell[][] space = gameMap.getSpace();
         for (int i = 0; i < space.length; i++) {

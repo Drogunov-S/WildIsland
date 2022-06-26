@@ -1,8 +1,8 @@
 package ru.javarush.drogunov.wildisland.view;
 
-import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
 import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
+import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -23,6 +23,7 @@ public class ConsoleView implements View {
 
     @Override
     public String showStatistics() {
+        System.out.println(gameMap.getSetUnits().size());
         Cell[][] cells = gameMap.getSpace();
         //TODO не могу как передать компаратор для сортировки по значению
         Map<String, Integer> statisticsMap = new TreeMap<>();
@@ -47,7 +48,7 @@ public class ConsoleView implements View {
         int count = 0;
 
         for (Map.Entry<String, Integer> units : statisticsMap.entrySet()) {
-            int columns = 2;
+            int columns = 16;
             if (count == columns) {
                 resultString.append('\n');
                 count = 0;
@@ -96,5 +97,23 @@ public class ConsoleView implements View {
         return (IntStream.range(0, cols)
                 .mapToObj(col -> (col == 0 ? left : center) + border)
                 .collect(Collectors.joining("", "", String.valueOf(right))));
+    }
+
+    @Override
+    public String showCountCellUnits() {
+        StringBuilder stringBuilder = new StringBuilder();
+        Cell[][] space = gameMap.getSpace();
+        for (int j = 0, spaceLength = space.length; j < spaceLength; j++) {
+            Cell[] cells = space[j];
+            for (int i = 0; i < cells.length; i++) {
+                Cell cell = cells[i];
+                String str = "[" + j + " " + i + "] = " + cell.getGameUnitList().size();
+                stringBuilder.append(str + "\t") ;
+            }
+            stringBuilder.append("\n");
+        }
+
+        System.out.println(stringBuilder);
+        return stringBuilder.toString();
     }
 }

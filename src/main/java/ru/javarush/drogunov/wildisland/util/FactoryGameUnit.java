@@ -30,14 +30,11 @@ public class FactoryGameUnit implements Factory {
             Constructor<?> constructor = null;
             try {
                 constructor = unit.getConstructor(String.class, String.class, double.class, Limits.class);
-//                unitsOnCell.add(gameUnit);
+                GameUnit gameUnit = (GameUnit) constructor.newInstance(name, icon, weight, limit);
+                unitsOnCell.add(gameUnit);
                 for (int i = 0; i < Randomizer.getRandomInteger(maxPopulation) - 1; i++) {
-                    GameUnit gameUnit = (GameUnit) constructor.newInstance(name, icon, weight, limit);
-                    unitsOnCell.add(gameUnit);
-//TODO после переделки метода clone раскомментировать
-//                    GameUnit clone = gameUnit.clone();
-
-//                    unitsOnCell.add(clone);
+                    GameUnit clone = gameUnit.clone(gameUnit);
+                    unitsOnCell.add(clone);
                 }
             } catch (NoSuchMethodException e) {
                 throw new ConstructorNotFound("Constructor not found", e);

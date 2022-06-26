@@ -19,8 +19,8 @@ public class GameWorker extends Thread {
 
     @Override
     public void run() {
-
         ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(4);
+
 
         List<GameUnitWorker> workers = game.getGameMap().getSetUnits()
                 .stream()
@@ -28,19 +28,19 @@ public class GameWorker extends Thread {
                 .toList();
 
         mainPool.scheduleAtFixedRate(() -> {
-            ExecutorService servicePool = Executors.newFixedThreadPool(15);
+            ExecutorService servicePool = Executors.newFixedThreadPool(16);
             workers.forEach(servicePool::submit);
-            servicePool.shutdown();
+            servicePool.shutdownNow();
             try {
                 if (servicePool.awaitTermination(PERIOD, TimeUnit.MILLISECONDS)) {
 //                    game.getView().showMap();
                     game.getView().showStatistics();
+                    game.getView().showCountCellUnits();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }, PERIOD, PERIOD, TimeUnit.MILLISECONDS);
-
 
 
         /*ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(2);

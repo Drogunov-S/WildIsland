@@ -16,8 +16,7 @@ public class Runner {
         MapFactory mapFactory = new MapFactory(factoryGameUnit, gameSettings);
         GameMap gameMap = mapFactory.createMapUnits();
         View view = new ConsoleView(gameMap);
-        view.showStatistics();
-//        System.out.println(view.showStatistics());
+
         Game game = new Game(gameMap, factoryGameUnit, view);
         GameWorker gameWorker= new GameWorker(game);
         gameWorker.start();

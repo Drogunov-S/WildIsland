@@ -1,4 +1,4 @@
-package ru.javarush.drogunov.wildisland.servises;
+package ru.javarush.drogunov.wildisland.services;
 
 
 import ru.javarush.drogunov.wildisland.enity.Game;
@@ -9,8 +9,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static ru.javarush.drogunov.wildisland.Constants.GAME_UNITS;
+
 public class GameWorker extends Thread {
-    public static final int PERIOD = 1000;
+    public static final int PERIOD = 3000;
     private final Game game;
 
     public GameWorker(Game game) {
@@ -19,23 +21,22 @@ public class GameWorker extends Thread {
 
     @Override
     public void run() {
-        ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(4);
+        ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(2);
 
 
-        List<GameUnitWorker> workers = game.getGameMap().getSetUnits()
+        List<GameUnitWorker> workers = GAME_UNITS.keySet()
                 .stream()
                 .map(p -> new GameUnitWorker(p, game.getGameMap()))
                 .toList();
-
         mainPool.scheduleAtFixedRate(() -> {
             ExecutorService servicePool = Executors.newFixedThreadPool(16);
             workers.forEach(servicePool::submit);
-            servicePool.shutdownNow();
+            servicePool.shutdown();
             try {
                 if (servicePool.awaitTermination(PERIOD, TimeUnit.MILLISECONDS)) {
 //                    game.getView().showMap();
                     game.getView().showStatistics();
-                    game.getView().showCountCellUnits();
+//                    game.getView().showCountCellUnits();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

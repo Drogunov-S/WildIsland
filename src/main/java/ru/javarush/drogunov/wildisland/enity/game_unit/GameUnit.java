@@ -47,18 +47,16 @@ public abstract class GameUnit implements Cloneable, Multiple {
     public void multiply(Cell cell) {
 //        System.out.println("размножился " + name + Thread.currentThread().getName());
 //        if (this instanceof Plant) {
-        cell.getLock().lock();
+        cell.lockCell();
         try {
             if (cell.getCountPopulations(this) < this.limits.getMaxPopulation()) {
                 GameUnit clone = this.clone(this);
-                cell.addCell(clone);
+                cell.getGameUnitList().add(clone);
             }
         } finally {
-            cell.getLock().unlock();
+            cell.unlockCell();
         }
-        /*} else {
 
-        }*/
     }
 
     @Override

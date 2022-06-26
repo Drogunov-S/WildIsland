@@ -3,7 +3,7 @@ package ru.javarush.drogunov.wildisland;
 import ru.javarush.drogunov.wildisland.enity.Game;
 import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
 import ru.javarush.drogunov.wildisland.enity.game_space.GameSettings;
-import ru.javarush.drogunov.wildisland.servises.GameWorker;
+import ru.javarush.drogunov.wildisland.services.GameWorker;
 import ru.javarush.drogunov.wildisland.util.FactoryGameUnit;
 import ru.javarush.drogunov.wildisland.util.MapFactory;
 import ru.javarush.drogunov.wildisland.view.ConsoleView;

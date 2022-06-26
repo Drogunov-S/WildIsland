@@ -14,7 +14,7 @@ public class Cell {
     private final Lock lock = new ReentrantLock(true);
 
     @Getter
-    private List<GameUnit> gameUnitList = new ArrayList<>(1000);
+    private volatile List<GameUnit> gameUnitList;
     private List<Cell> nextCell = new ArrayList<>();
 
 
@@ -41,15 +41,18 @@ public class Cell {
     }
 
     public Map<Type, Set<GameUnit>> getMapGameUnits() {
+
         Map<Type, Set<GameUnit>> result = new HashMap<>();
-        for (GameUnit gameUnit : gameUnitList) {
-            Class<? extends GameUnit> aClass = gameUnit.getClass();
-            if (!result.containsKey(aClass)) {
-                result.put(aClass, new HashSet<>(Set.of(gameUnit))); // не работал из за Set.of?
-                continue;
+            for (GameUnit gameUnit : gameUnitList) {
+                Class<? extends GameUnit> aClass = gameUnit.getClass();
+                if (!result.containsKey(aClass)) {
+                    HashSet<GameUnit> typeUnits = new HashSet<>();
+                    typeUnits.add(gameUnit);
+                    result.put(aClass, typeUnits); // не работал из за Set.of?
+                    continue;
+                }
+                result.get(aClass).add(gameUnit);
             }
-            result.get(aClass).add(gameUnit);
-        }
         return result;
     }
 
@@ -103,5 +106,22 @@ public class Cell {
         }
         str.append(" |\n");
         return str.toString();
+    }
+
+    public GameUnit getPair(GameUnit unit) {
+        for (GameUnit gameUnit : gameUnitList) {
+            if (unit != gameUnit) {
+                return gameUnit;
+            }
+        }
+        return null;
+    }
+
+    public void lockCell() {
+        lock.lock();
+    }
+
+    public void unlockCell() {
+        lock.unlock();
     }
 }

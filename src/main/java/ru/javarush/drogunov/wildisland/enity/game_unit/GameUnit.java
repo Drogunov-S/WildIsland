@@ -11,15 +11,12 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Data
-
 @EqualsAndHashCode
 public abstract class GameUnit implements Cloneable, Multiple {
 
     private static final AtomicLong indicator = new AtomicLong(System.currentTimeMillis());
     private long id = indicator.incrementAndGet();
-
     private final String type = this.getClass().getSimpleName();
-
     private final String name;
     private final String icon;
     private double weight;
@@ -31,22 +28,13 @@ public abstract class GameUnit implements Cloneable, Multiple {
         this.weight = weight;
         this.limits = limits;
     }
-
     public String getType() {
         return type;
     }
 
-    public GameUnit(GameUnit gameUnit) {
-        //TODO сделать рандомный вес
-        this(gameUnit.getName(),
-                gameUnit.getIcon(),
-                gameUnit.getWeight(),
-                gameUnit.getLimits());
-    }
-
     @Override
     public String toString() {
-        return (/*name + " " + */icon);
+        return (name + " " + icon);
         //TODO Вопрос тут вместо конкатенации лучше было бы использовать StringBuilder??
     }
 
@@ -74,15 +62,16 @@ public abstract class GameUnit implements Cloneable, Multiple {
         clone.weight = Randomizer.getRandomInteger(clone.weight);
         return clone;
     }
-
+@SuppressWarnings("I'm don't undestend whats to do it")
     public <T extends GameUnit> T clone(T unit) {
         try {
-            return (T) unit.clone();
+            T clone = (T) unit.clone();
+            return clone;
         } catch (CloneNotSupportedException e) {
             throw new CloneUnitException("don't cloned", e);
         }
     }
-
+@SuppressWarnings("Method will be use future")
     public boolean saveDie(Cell cell) {
         cell.lockCell();
         try {

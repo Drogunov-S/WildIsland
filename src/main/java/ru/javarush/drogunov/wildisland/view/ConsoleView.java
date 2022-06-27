@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ConsoleView implements View {
     private final GameMap gameMap;
     private final int positions = 3;
@@ -20,28 +21,8 @@ public class ConsoleView implements View {
         this.gameMap = gameMap;
     }
 
-/*    @Override
-    public String showStatistics() {
-        Map<String, Integer> statistics = new HashMap<>();
-        Cell[][] cells = gameMap.getSpace();
-        for (Cell[] row : cells) {
-            for (Cell cell : row) {
-                var residents = cell.getUnitsMap();
-                if (Objects.nonNull(residents)) {
-                    residents.values().stream()
-                            .filter(set -> set.size() > 0)
-                            .forEach(set -> {
-                                        String icon = set.stream().findAny().get().getIcon();
-                                        statistics.put(icon, statistics.getOrDefault(icon, 0) + set.size());
-                                    }
-                            );
-                }
-            }
-        }
-        System.out.println(statistics + "\n");
-        return statistics.toString();
-    }*/
     @Override
+    @SuppressWarnings("I don't undestande what to do it this warrning")
     public String showStatistics() {
         System.out.println("Всего на карте: " + gameMap.getSetUnits().size());
         Cell[][] cells = gameMap.getSpace();
@@ -53,12 +34,19 @@ public class ConsoleView implements View {
                 Map<String, Set<GameUnit>> residents = cell.getUnitsMap();
                 for (Set<GameUnit> unitsOnCell : residents.values()) {
                     if (unitsOnCell.size() > 0) {
-                        String gameUnitName = unitsOnCell.stream().findAny().get().toString();
+                        String gameUnitName = unitsOnCell
+                                .stream()
+                                .findAny()
+                                .get()
+                                .toString();
                         if (statisticsMap.containsKey(gameUnitName)) {
                             Integer oldCount = statisticsMap.get(gameUnitName);
                             statisticsMap.put(gameUnitName, unitsOnCell.size() + oldCount);
                         } else {
-                            statisticsMap.put(unitsOnCell.stream().findAny().get().toString(), unitsOnCell.size());
+                            statisticsMap.put(unitsOnCell.stream()
+                                    .findAny()
+                                    .get()
+                                    .toString(), unitsOnCell.size());
                         }
                     }
                 }
@@ -129,11 +117,10 @@ public class ConsoleView implements View {
                 Cell cell = cells[i];
                 AtomicInteger countUnits = new AtomicInteger();
 
-                cell.getUnitsMap().values().forEach(set -> {
-                    set.forEach(unit -> countUnits.getAndIncrement());
-                });
+                cell.getUnitsMap().values().forEach(set -> set
+                        .forEach(unit -> countUnits.getAndIncrement()));
                 String str = "[" + j + " " + i + "] = " + countUnits;
-                stringBuilder.append(str + "\t") ;
+                stringBuilder.append(str).append("\t");
             }
             stringBuilder.append("\n");
         }

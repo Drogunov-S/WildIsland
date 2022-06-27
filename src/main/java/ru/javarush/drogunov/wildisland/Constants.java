@@ -8,7 +8,7 @@ import ru.javarush.drogunov.wildisland.enity.game_unit.plants.type_plants.Simple
 import java.util.*;
 
 public class Constants {
-
+    //Should go to the settings file
     public static final Map<Class<?>, String> GAME_UNITS = new HashMap<>();
 
     static {
@@ -30,7 +30,7 @@ public class Constants {
         GAME_UNITS.put(SimplePlant.class, "");
     }
 
-    //Мапа хранящая 1) все классы 2) мапа из (Класс цели, вероятности съедания)
+    //Map storing 1) All unit classes for create island. 2) Value map (Target class, Eating probabilities)
     public static final Map<Class<?>, Map<Class<?>, Integer>> PROBABILITY_EATING = new HashMap<>();
 
     static {
@@ -38,7 +38,8 @@ public class Constants {
                 .keySet()
                 .stream()
                 .filter(Animal.class::isAssignableFrom)
-                .forEach(unitEatable -> PROBABILITY_EATING.put(unitEatable, getTargets(unitEatable)));
+                .forEach(unitEatable -> PROBABILITY_EATING
+                        .put(unitEatable, getTargets(unitEatable)));
     }
 
     private static Map<Class<?>, Integer> getTargets(Class<?> unitEater) {
@@ -50,23 +51,13 @@ public class Constants {
         while (read.hasNext()) {
             Integer probability = Integer.valueOf(read.next());
             String unitTarget = read.next();
-            //TODO Переделать по другому что бы не искать по Map
-            // Class<?> classUnitTarget = Class.forName(unitTarget);
             for (Class<?> classUnitTarget : GAME_UNITS.keySet()) {
-                if (classUnitTarget.getSimpleName().equals(unitTarget)) {
+                String simpleName = classUnitTarget.getSimpleName();
+                if (simpleName.equals(unitTarget)) {
                     result.put(classUnitTarget, probability);
                 }
             }
         }
         return result;
     }
-
-    //Тест создания Map PROBABILITY_EATER
-   /* public static void main(String[] args) {
-        PROBABILITY_EATING.forEach((unitEating, mapUnitsTarget) -> mapUnitsTarget.forEach((unitTarget, probability) -> {
-                String nameUnitEating = unitEating.getSimpleName();
-                String nameUnitTarget = unitTarget.getSimpleName();
-                System.out.printf("Eater = %s, Target = %s, %d\n", nameUnitEating, nameUnitTarget, probability);
-            }));
-    }*/
 }

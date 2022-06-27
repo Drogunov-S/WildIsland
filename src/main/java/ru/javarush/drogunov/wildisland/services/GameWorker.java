@@ -2,7 +2,6 @@ package ru.javarush.drogunov.wildisland.services;
 
 
 import ru.javarush.drogunov.wildisland.enity.Game;
-import ru.javarush.drogunov.wildisland.enity.game_space.GameSettings;
 import ru.javarush.drogunov.wildisland.view.View;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static ru.javarush.drogunov.wildisland.Constants.GAME_UNITS;
 
 public class GameWorker extends Thread {
-    public static final int PERIOD = 2000;
+    public static final int PERIOD = 500;
     AtomicInteger days = new AtomicInteger();
     private final Game game;
 
@@ -25,6 +24,7 @@ public class GameWorker extends Thread {
 
     @Override
     public void run() {
+
         View view = game.getView();
         view.showStatistics();
 //        view.showCountCellUnits();
@@ -37,23 +37,24 @@ public class GameWorker extends Thread {
                 .map(p -> new GameUnitWorker(p, game.getGameMap()))
                 .toList();
         //Виновник добавления новых задач при этом старые не успевают завершится
-        mainPool.scheduleAtFixedRate(() -> {
-            ExecutorService servicePool = Executors.newFixedThreadPool(16);
+        mainPool.scheduleWithFixedDelay(() -> {
+            ExecutorService servicePool = Executors.newFixedThreadPool(2);
+            Thread.currentThread().setName("GameWorker MainPool");
             workers.forEach(servicePool::submit);
             servicePool.shutdown();
             try {
                 if (servicePool.awaitTermination(PERIOD, TimeUnit.MILLISECONDS)) {
 //                    game.getView().showMap();
                     game.getView().showStatistics();
-//                    game.getView().showCountCellUnits();
+                    game.getView().showCountCellUnits();
                     days.incrementAndGet();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            if (days.get() == GameSettings.gameTime) {
+           /* if (days.get() == GameSettings.gameTime) {
                 mainPool.shutdown();
-            }
+            }*/
         }, PERIOD, PERIOD, TimeUnit.MILLISECONDS);
 
 

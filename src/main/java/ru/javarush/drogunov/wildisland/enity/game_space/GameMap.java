@@ -8,13 +8,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class GameMap {
-    private GameSettings gameSettings;
-    private Cell[][] space;
+    private final Cell[][] space;
 
 
     public GameMap(GameSettings gameSettings) {
-        this.gameSettings = gameSettings;
-        space = new Cell[gameSettings.getWidth()][gameSettings.getLength()];
+        int width = gameSettings.getWidth();
+        int length = gameSettings.getLength();
+        space = new Cell[width][length];
     }
 
     public int getCountLine() {
@@ -25,21 +25,9 @@ public class GameMap {
         return space[0].length;
     }
 
-
     public Cell[][] getSpace() {
         return space;
     }
-
-
-
-/*    public Map<Type, Set<GameUnit>> getMapGameUnits(){
-        Map<Type, Set<GameUnit>> result = new HashMap<>();
-        Arrays.stream(space)
-                .forEach(lines -> Arrays.stream(lines)
-                        .forEach(cell -> result.putAll(cell.getMapGameUnits())));
-        return result;
-    }*/
-
 
     public Set<GameUnit> getSetUnits() {
         Set<GameUnit> setUnitsOnGameMap = new HashSet<>();

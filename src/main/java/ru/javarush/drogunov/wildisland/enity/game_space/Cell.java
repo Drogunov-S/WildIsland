@@ -38,11 +38,6 @@ public class Cell {
     };
 
 
-    public Lock getLock() {
-        return lock;
-    }
-
-
     public void linkedCells(GameMap gameMap, int line, int colum) {
         Cell[][] space = gameMap.getSpace();
         if (line > 0) {
@@ -70,8 +65,9 @@ public class Cell {
     public boolean isMaxPopulation(GameUnit gameUnit) {
         Set<GameUnit> set = unitsOnCell.get(gameUnit.getType());
         int size = set.size();
-        boolean result = size <= gameUnit.getLimits().getMaxPopulation();
-        return result;
+        return size <= gameUnit
+                .getLimits()
+                .getMaxPopulation();
     }
 
 

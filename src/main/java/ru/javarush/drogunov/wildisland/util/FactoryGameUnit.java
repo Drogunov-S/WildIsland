@@ -1,6 +1,5 @@
 package ru.javarush.drogunov.wildisland.util;
 
-import lombok.SneakyThrows;
 import ru.javarush.drogunov.wildisland.Constants;
 import ru.javarush.drogunov.wildisland.annotations.UnitSetting;
 import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
@@ -11,10 +10,11 @@ import ru.javarush.drogunov.wildisland.exceptions.ConstructorNotFound;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class FactoryGameUnit implements Factory {
-
 
     @Override
     public Cell createCell() {
@@ -30,7 +30,7 @@ public class FactoryGameUnit implements Factory {
             int maxPopulation = setting.maxPopulations();
             Limits limit = new Limits(weight, maxPopulation, setting.maxSteps(), setting.satiety());
 
-            Constructor<?> constructor = null;
+            Constructor<?> constructor;
             try {
                 constructor = unit.getConstructor(String.class, String.class, double.class, Limits.class);
                 GameUnit gameUnit = (GameUnit) constructor.newInstance(name, icon, weight, limit);
@@ -48,21 +48,5 @@ public class FactoryGameUnit implements Factory {
             gameUnitList.put(unit.getSimpleName(), unitsOnCell);
         }
         return cell;
-    }
-
-    //Этот метод был изначально для создания без параметров и конструктором по умолчанию.
-
-    @SneakyThrows
-    public static List<GameUnit> getAllRandomCountGameUnit() {
-        List<GameUnit> units = new ArrayList<>();
-        for (Class unit : Constants.GAME_UNITS.keySet()) {
-            UnitSetting settings = (UnitSetting) unit.getDeclaredAnnotation(UnitSetting.class);
-            int count = Randomizer.getRandomInteger(settings.maxPopulations());
-            for (int i = 0; i < count; i++) {
-                units.add((GameUnit) unit.getConstructor().newInstance());
-            }
-        }
-
-        return units;
     }
 }

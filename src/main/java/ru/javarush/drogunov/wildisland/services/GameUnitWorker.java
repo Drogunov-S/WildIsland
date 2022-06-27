@@ -8,12 +8,14 @@ import ru.javarush.drogunov.wildisland.enity.game_unit.animals.Animal;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameUnitWorker implements Runnable {
 
+    private final AtomicInteger threadCount = new AtomicInteger(0);
+
     private final Class<?> prototype;
     private final GameMap gameMap;
-
     private final Queue<Task> tasks = new ConcurrentLinkedDeque<>();
 
     public GameUnitWorker(Class<?> prototype, GameMap gameMap) {
@@ -23,6 +25,8 @@ public class GameUnitWorker implements Runnable {
 
     @Override
     public void run() {
+        Thread.currentThread().setName(prototype.getSimpleName() + "-" + threadCount.incrementAndGet());
+
         Cell[][] cells = gameMap.getSpace();
         for (Cell[] row : cells) {
             for (Cell cell : row) {
@@ -33,54 +37,31 @@ public class GameUnitWorker implements Runnable {
                     System.err.println("Что тут у нас?)) ");
                     System.exit(999);
                 }
-
-
-                //ver 1
-       /* Cell[][] cells = gameMap.getSpace();
-        for (Cell[] row : cells) {
-            for (Cell cell : row) {
-                Type type = prototype.getClass();
-            *//*    cell.lockCell();
-                try {
-*//*
-                    Set<GameUnit> gameUnits = cell.getMapGameUnits().get(type);
-                    for (GameUnit gameUnit : gameUnits) {
-                        gameUnit.multiply(cell);
-                        if (gameUnit instanceof Animal animal) {
-//                        animal.eat(cell);
-//                        animal.walk(cell);
-//
-//
-//                        Cell destination = animal.move(cell);
-                            //animal.eat(destination);
-                            //animal.spawn(destination);
-                        } else {
-//                        prototype.multiply(cell);
-                        }
-                    }
-               *//* } finally {
-                    cell.unlockCell();
-                }*/
             }
         }
+//        System.out.println(gameMap.getSetUnits().size());
     }
 
     private void progressOnOneCell(Cell cell) {
         Set<GameUnit> allUnitsOnCell = cell.getUnitsMap().get(prototype.getSimpleName());
-        cell.lockCell();
+        if (allUnitsOnCell.size() == 0){
+            return;
+        }
 
+        cell.lockCell();
+//232479
         try {
             allUnitsOnCell.forEach(typedUnit -> {
                 Task task = new Task(typedUnit, unit -> {
-                        //TODO зависаю после определенного цикла
+                    //TODO зависаю после определенного цикла
                     if (unit instanceof Animal animal) {
                         animal.eat(cell);
                         animal.walk(cell);
                     }
                     unit.multiply(cell);
                 });
-                    tasks.add(task);
-        });
+                tasks.add(task);
+            });
         } finally {
             cell.unlockCell();
         }

@@ -89,6 +89,7 @@ public abstract class Animal
     public void multiply(Cell cell) {
         cell.lockCell();
         try {
+//            System.out.println(getName() + " multi");
             if (cell.isMaxPopulation(this)) {
                 GameUnit partner = cell.getPair(this);
                 if (partner != null) {
@@ -100,25 +101,6 @@ public abstract class Animal
         } finally {
             cell.unlockCell();
         }
-
-
-
-        /*currentCell.lockCell();
-        try {
-
-//        System.out.println("размножился животное " + getName()+ " " + Thread.currentThread().getName());
-            Map<Type, Set<GameUnit>> mapGameUnits = currentCell.getMapGameUnits();
-            Set<GameUnit> set = mapGameUnits.get(this.getClass());
-            if (set != null) {
-                if (currentCell.getCountPopulations(this) < this.getLimits().getMaxPopulation()) {
-                    GameUnit next = set.iterator().next();
-                    Animal clone = this.clone(this);
-                    currentCell.addCell(clone);
-                }
-            }
-        } finally {
-            currentCell.unlockCell();;
-        }*/
     }
 
     @Override

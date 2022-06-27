@@ -9,7 +9,6 @@ import ru.javarush.drogunov.wildisland.interfaces.Walkable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
 
 import static ru.javarush.drogunov.wildisland.Constants.PROBABILITY_EATING;
 
@@ -41,6 +40,7 @@ public abstract class Animal
                     //TODO включить вероятность съедания
                     if (next.getClass() == target) {
 //                        if (Randomizer.getResult(pair.getValue())) {
+//                        saveDie(cell);
                         iterator1.remove();
                         break;
 //                        }
@@ -126,27 +126,20 @@ public abstract class Animal
         if (satiety < 0) {
             saveDie(cell);
         }
-        Cell nextCell = cell.getNextCell(this.getLimits().getMaxSteps());
-
-        Lock lock = cell.getLock();
-        Lock lock2 = nextCell.getLock();
-
-        while (lock.tryLock() && lock2.tryLock())
-
-            try {
-
-                cell.getUnitsMap().get(getType()).remove(this);
-                nextCell.getUnitsMap().get(getType()).add(this);
-            } finally {
-                cell.unlockCell();
-                nextCell.unlockCell();
-            }
-
+        cell.lockCell();
         try {
-
+            cell.getUnitsMap().get(getType()).remove(this);
         } finally {
-
+            cell.unlockCell();
         }
 
+        Cell nextCell = cell.getNextCell(this.getLimits().getMaxSteps());
+
+        nextCell.lockCell();
+        try {
+            nextCell.getUnitsMap().get(getType()).add(this);
+        } finally {
+            nextCell.unlockCell();
+        }
     }
 }

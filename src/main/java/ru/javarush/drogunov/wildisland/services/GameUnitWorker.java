@@ -72,12 +72,12 @@ public class GameUnitWorker implements Runnable {
         try {
             allUnitsOnCell.forEach(typedUnit -> {
                 Task task = new Task(typedUnit, unit -> {
-                        unit.multiply(cell);
                         //TODO зависаю после определенного цикла
-                if (unit instanceof Animal animal) {
-                    animal.walk(cell);
-                    animal.eat(cell);
-                }
+                    if (unit instanceof Animal animal) {
+                        animal.eat(cell);
+                        animal.walk(cell);
+                    }
+                    unit.multiply(cell);
                 });
                     tasks.add(task);
         });

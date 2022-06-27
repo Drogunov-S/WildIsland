@@ -2,6 +2,7 @@ package ru.javarush.drogunov.wildisland.services;
 
 
 import ru.javarush.drogunov.wildisland.enity.Game;
+import ru.javarush.drogunov.wildisland.enity.game_space.GameSettings;
 import ru.javarush.drogunov.wildisland.view.View;
 
 import java.util.List;
@@ -9,11 +10,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static ru.javarush.drogunov.wildisland.Constants.GAME_UNITS;
 
 public class GameWorker extends Thread {
-    public static final int PERIOD = 1000;
+    public static final int PERIOD = 2000;
+    AtomicInteger days = new AtomicInteger();
     private final Game game;
 
     public GameWorker(Game game) {
@@ -29,13 +32,13 @@ public class GameWorker extends Thread {
 
         ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(2);
 
-
         List<GameUnitWorker> workers = GAME_UNITS.keySet()
                 .stream()
                 .map(p -> new GameUnitWorker(p, game.getGameMap()))
                 .toList();
+        //Виновник добавления новых задач при этом старые не успевают завершится
         mainPool.scheduleAtFixedRate(() -> {
-            ExecutorService servicePool = Executors.newFixedThreadPool(4);
+            ExecutorService servicePool = Executors.newFixedThreadPool(16);
             workers.forEach(servicePool::submit);
             servicePool.shutdown();
             try {
@@ -43,9 +46,13 @@ public class GameWorker extends Thread {
 //                    game.getView().showMap();
                     game.getView().showStatistics();
 //                    game.getView().showCountCellUnits();
+                    days.incrementAndGet();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
+            }
+            if (days.get() == GameSettings.gameTime) {
+                mainPool.shutdown();
             }
         }, PERIOD, PERIOD, TimeUnit.MILLISECONDS);
 

@@ -88,10 +88,10 @@ public abstract class GameUnit implements Cloneable, Multiple {
         try {
             Set<GameUnit> set = cell.getUnitsMap().get(this.getType());
             set.remove(this);
-            if (!set.contains(this)) {
+            /*if (!set.contains(this)) {
                 System.out.println("удален");
-                return true;
-            }
+                return true;*/
+//            }
         } finally {
             cell.unlockCell();
         }

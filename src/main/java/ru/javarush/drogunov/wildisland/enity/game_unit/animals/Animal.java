@@ -9,7 +9,6 @@ import ru.javarush.drogunov.wildisland.interfaces.Walkable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
 
 import static ru.javarush.drogunov.wildisland.Constants.PROBABILITY_EATING;
 
@@ -18,20 +17,17 @@ public abstract class Animal
         extends GameUnit
         implements Walkable, Eating {
 
+    private double satiety;
+
     public Animal(String name, String icon, double weight, Limits limits) {
         super(name, icon, weight, limits);
+        satiety = limits.getMaxSatiety();
     }
 
 
     @Override
     public void eat(Cell cell) {
-        Lock lock = cell.getLock();
-        try {
-            lock.lockInterruptibly();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
+        cell.lockCell();
         try {
             Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(this.getClass());
             Map<String, Set<GameUnit>> gameUnitList = cell.getUnitsMap();
@@ -97,6 +93,7 @@ public abstract class Animal
                     if (partner != null) {
                         GameUnit clone = partner.clone(this);
                         cell.getUnitsMap().get(getType()).add(clone);
+                        satiety *= 0.5;
                     }
                 }
             } finally {
@@ -125,6 +122,9 @@ public abstract class Animal
 
     @Override
     public void walk(Cell cell) {
+        if (satiety < 0) {
+            saveDie(cell);
+        }
         cell.lockCell();
         try {
             cell.getUnitsMap().get(getType()).remove(this);

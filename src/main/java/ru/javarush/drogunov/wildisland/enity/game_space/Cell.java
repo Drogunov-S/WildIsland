@@ -70,9 +70,9 @@ public class Cell {
     public boolean isMaxPopulation(GameUnit gameUnit) {
         Set<GameUnit> set = unitsOnCell.get(gameUnit.getType());
         int size = set.size();
-//        System.out.println(size + " " + gameUnit.getLimits().getMaxPopulation() * 4 + " " + gameUnit.getName());
-        return size <= gameUnit.getLimits().getMaxPopulation();
-        }
+        boolean result = size <= gameUnit.getLimits().getMaxPopulation();
+        return result;
+    }
 
 
         public GameUnit getPair (GameUnit unit){

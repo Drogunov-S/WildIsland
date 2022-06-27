@@ -7,6 +7,7 @@ import ru.javarush.drogunov.wildisland.exceptions.CloneUnitException;
 import ru.javarush.drogunov.wildisland.interfaces.Multiple;
 import ru.javarush.drogunov.wildisland.util.Randomizer;
 
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Data
@@ -80,6 +81,23 @@ public abstract class GameUnit implements Cloneable, Multiple {
         } catch (CloneNotSupportedException e) {
             throw new CloneUnitException("don't cloned", e);
         }
+    }
+
+    public boolean saveDie(Cell cell) {
+        cell.lockCell();
+        try {
+            Set<GameUnit> set = cell.getUnitsMap().get(this.getType());
+            set.remove(this);
+            if (!set.contains(this)) {
+                System.out.println("удален");
+                return true;
+            }
+        } finally {
+            cell.unlockCell();
+        }
+
+        return false;
+
     }
 
 

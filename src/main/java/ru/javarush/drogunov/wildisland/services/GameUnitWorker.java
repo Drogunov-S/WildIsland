@@ -75,7 +75,7 @@ public class GameUnitWorker implements Runnable {
                         unit.multiply(cell);
                         //TODO зависаю после определенного цикла
                 if (unit instanceof Animal animal) {
-//                            animal.eat(cell);
+                            animal.eat(cell);
                             animal.walk(cell);
                 }
                 });

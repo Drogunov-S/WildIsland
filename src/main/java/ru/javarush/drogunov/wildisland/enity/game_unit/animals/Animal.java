@@ -9,6 +9,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Walkable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
 
 import static ru.javarush.drogunov.wildisland.Constants.PROBABILITY_EATING;
 
@@ -87,18 +88,18 @@ public abstract class Animal
     @Override
     public void multiply(Cell cell) {
         cell.lockCell();
-            try {
-                if (cell.isMaxPopulation(this)) {
-                    GameUnit partner = cell.getPair(this);
-                    if (partner != null) {
-                        GameUnit clone = partner.clone(this);
-                        cell.getUnitsMap().get(getType()).add(clone);
-                        satiety *= 0.5;
-                    }
+        try {
+            if (cell.isMaxPopulation(this)) {
+                GameUnit partner = cell.getPair(this);
+                if (partner != null) {
+                    GameUnit clone = partner.clone(this);
+                    cell.getUnitsMap().get(getType()).add(clone);
+                    satiety *= 0.5;
                 }
-            } finally {
-                cell.unlockCell();
             }
+        } finally {
+            cell.unlockCell();
+        }
 
 
 
@@ -125,20 +126,26 @@ public abstract class Animal
         if (satiety < 0) {
             saveDie(cell);
         }
-        cell.lockCell();
-        try {
-            cell.getUnitsMap().get(getType()).remove(this);
-        } finally {
-            cell.unlockCell();
-        }
-
         Cell nextCell = cell.getNextCell(this.getLimits().getMaxSteps());
-        nextCell.lockCell();
+
+        Lock lock = cell.getLock();
+        Lock lock2 = nextCell.getLock();
+
+        while (lock.tryLock() && lock2.tryLock())
+
+            try {
+
+                cell.getUnitsMap().get(getType()).remove(this);
+                nextCell.getUnitsMap().get(getType()).add(this);
+            } finally {
+                cell.unlockCell();
+                nextCell.unlockCell();
+            }
 
         try {
-            nextCell.getUnitsMap().get(getType()).add(this);
+
         } finally {
-            nextCell.unlockCell();
+
         }
 
     }

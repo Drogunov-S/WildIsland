@@ -10,11 +10,11 @@ public class GameSettings {
 
     @Getter
     @Settings(code = 1, name = "Ширина игрового поля")
-    private int width = 2;//100
+    private int width = 30;//100
 
     @Getter
     @Settings(code = 2, name = "Длина игрового поля")
-    private int length = 2;//20
+    private int length = 10;//20
 
     @Settings(code = 3, name = "Максимальное время игры")
     private int gameTime = 0;

@@ -46,7 +46,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
 
     @Override
     public String toString() {
-        return /*name + " " + */icon + (getLimits().getMaxPopulation()*4);
+        return (/*name + " " + */icon);
         //TODO Вопрос тут вместо конкатенации лучше было бы использовать StringBuilder??
     }
 

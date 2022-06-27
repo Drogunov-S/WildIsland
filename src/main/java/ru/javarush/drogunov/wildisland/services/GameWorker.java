@@ -2,6 +2,7 @@ package ru.javarush.drogunov.wildisland.services;
 
 
 import ru.javarush.drogunov.wildisland.enity.Game;
+import ru.javarush.drogunov.wildisland.view.View;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -21,6 +22,11 @@ public class GameWorker extends Thread {
 
     @Override
     public void run() {
+        View view = game.getView();
+        view.showStatistics();
+//        view.showCountCellUnits();
+
+
         ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(2);
 
 
@@ -36,7 +42,7 @@ public class GameWorker extends Thread {
                 if (servicePool.awaitTermination(PERIOD, TimeUnit.MILLISECONDS)) {
 //                    game.getView().showMap();
                     game.getView().showStatistics();
-                    game.getView().showCountCellUnits();
+//                    game.getView().showCountCellUnits();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

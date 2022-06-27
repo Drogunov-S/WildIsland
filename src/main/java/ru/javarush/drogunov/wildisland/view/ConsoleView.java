@@ -43,7 +43,7 @@ public class ConsoleView implements View {
     }*/
     @Override
     public String showStatistics() {
-        System.out.println(gameMap.getSetUnits().size());
+        System.out.println("Всего на карте: " + gameMap.getSetUnits().size());
         Cell[][] cells = gameMap.getSpace();
         //TODO не могу как передать компаратор для сортировки по значению
         Map<String, Integer> statisticsMap = new TreeMap<>();
@@ -127,14 +127,13 @@ public class ConsoleView implements View {
             Cell[] cells = space[j];
             for (int i = 0; i < cells.length; i++) {
                 Cell cell = cells[i];
-
                 AtomicInteger countUnits = new AtomicInteger();
+
                 cell.getUnitsMap().values().forEach(set -> {
                     set.forEach(unit -> countUnits.getAndIncrement());
                 });
                 String str = "[" + j + " " + i + "] = " + countUnits;
                 stringBuilder.append(str + "\t") ;
-                countUnits.set(0);
             }
             stringBuilder.append("\n");
         }

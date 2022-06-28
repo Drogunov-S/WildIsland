@@ -5,7 +5,7 @@ import ru.javarush.drogunov.wildisland.enity.game_unit.Limits;
 
 @UnitSetting(name = "Овца", icon = "\uD83D\uDC11", weight = 70, maxPopulations = 140, maxSteps = 3, satiety = 15)
 public class Sheep extends Herbivores {
-    public Sheep(String name, String icon, double weight, Limits limits) {
-        super(name, icon, weight, limits);
+    public Sheep(String name, String icon, Limits limits) {
+        super(name, icon, limits);
     }
 }

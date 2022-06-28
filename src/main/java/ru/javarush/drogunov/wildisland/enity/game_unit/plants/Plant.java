@@ -6,9 +6,9 @@ import ru.javarush.drogunov.wildisland.interfaces.Multiple;
 
 public abstract class Plant extends GameUnit implements Multiple {
 
-
-    public Plant(String name, String icon, double weight, Limits limits) {
-        super(name, icon, weight, limits);
+    public Plant(String name, String icon, Limits limits) {
+        super(name, icon, limits);
+        super.satiety = 0;
     }
 
 }

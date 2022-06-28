@@ -46,7 +46,7 @@ public class GameWorker extends Thread {
                 if (servicePool.awaitTermination(PERIOD, TimeUnit.MILLISECONDS)) {
 //                    game.getView().showMap();
                     game.getView().showStatistics();
-                    game.getView().showCountCellUnits();
+//                    game.getView().showCountCellUnits();
                     days.incrementAndGet();
                 }
             } catch (InterruptedException e) {

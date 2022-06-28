@@ -19,8 +19,9 @@ public abstract class GameUnit implements Cloneable, Multiple {
     private final String type = this.getClass().getSimpleName();
     private final String name;
     private final String icon;
-    protected double weight;
+
     protected double satiety;
+    protected double weight;
     protected Limits limits;
 
     public GameUnit(String name, String icon, Limits limits) {
@@ -28,8 +29,8 @@ public abstract class GameUnit implements Cloneable, Multiple {
         this.icon = icon;
         this.limits = limits;
         this.weight = Randomizer.getRandomDouble(limits.getMaxWeight());
-        this.satiety = Randomizer.getRandomDouble(limits.getMaxSatiety());
     }
+
     public String getType() {
         return type;
     }
@@ -42,7 +43,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
 
 
     @Override
-    public void multiply(Cell cell) {
+    public boolean multiply(Cell cell) {
 //        System.out.println("размножился " + name + Thread.currentThread().getName());
 //        if (this instanceof Plant) {
         cell.lockCell();
@@ -50,21 +51,22 @@ public abstract class GameUnit implements Cloneable, Multiple {
             if (cell.isMaxPopulation(this)) {
                 GameUnit clone = this.clone(this);
                 cell.getUnitsMap().get(getType()).add(clone);
+                return true;
             }
         } finally {
             cell.unlockCell();
         }
-
+        return false;
     }
 
     @Override
     protected GameUnit clone() throws CloneNotSupportedException {
         GameUnit clone = (GameUnit) super.clone();
         clone.id = indicator.incrementAndGet();
-        clone.weight = Randomizer.getRandomDouble(clone.weight);
         return clone;
     }
-@SuppressWarnings("I'm don't undestend whats to do it")
+
+    @SuppressWarnings("I'm don't undestend whats to do it")
     public <T extends GameUnit> T clone(T unit) {
         try {
             T clone = (T) unit.clone();
@@ -73,7 +75,8 @@ public abstract class GameUnit implements Cloneable, Multiple {
             throw new CloneUnitException("don't cloned", e);
         }
     }
-@SuppressWarnings("Method will be use future")
+
+    @SuppressWarnings("Method will be use future")
     public boolean saveDie(Cell cell) {
         cell.lockCell();
         try {

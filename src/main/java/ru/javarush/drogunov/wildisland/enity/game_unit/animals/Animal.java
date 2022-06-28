@@ -5,6 +5,7 @@ import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 import ru.javarush.drogunov.wildisland.enity.game_unit.Limits;
 import ru.javarush.drogunov.wildisland.interfaces.Eating;
 import ru.javarush.drogunov.wildisland.interfaces.Walkable;
+import ru.javarush.drogunov.wildisland.util.Randomizer;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -17,16 +18,15 @@ public abstract class Animal
         extends GameUnit
         implements Walkable, Eating {
 
-    private double satiety;
 
     public Animal(String name, String icon, Limits limits) {
         super(name, icon, limits);
-        satiety = limits.getMaxSatiety();
+        super.satiety = Randomizer.getRandomDouble(limits.getMaxSatiety());
     }
 
 
     @Override
-    public void eat(Cell cell) {
+    public boolean eat(Cell cell) {
         cell.lockCell();
         try {
             Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(this.getClass());
@@ -42,15 +42,15 @@ public abstract class Animal
 //                        if (Randomizer.getResult(pair.getValue())) {
 //                        saveDie(cell);
                         iterator1.remove();
-                        break;
+                        return true;
 //                        }
                     }
                 }
-
             }
         } finally {
             cell.unlockCell();
         }
+        return false;
     }
 
     /*public void eat(Cell currentCell) {
@@ -86,7 +86,7 @@ public abstract class Animal
     }*/
 
     @Override
-    public void multiply(Cell cell) {
+    public boolean multiply(Cell cell) {
         cell.lockCell();
         try {
 //            System.out.println(getName() + " multi");
@@ -95,16 +95,17 @@ public abstract class Animal
                 if (partner != null) {
                     GameUnit clone = partner.clone(this);
                     cell.getUnitsMap().get(getType()).add(clone);
-//                   satiety
+                    return true;
                 }
             }
         } finally {
             cell.unlockCell();
         }
+        return false;
     }
 
     @Override
-    public void walk(Cell cell) {
+    public boolean walk(Cell cell) {
         if (satiety < 0) {
             saveDie(cell);
         }
@@ -123,5 +124,6 @@ public abstract class Animal
         } finally {
             nextCell.unlockCell();
         }
+        return true;
     }
 }

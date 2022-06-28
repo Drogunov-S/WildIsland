@@ -1,21 +1,25 @@
 package ru.javarush.drogunov.wildisland.services;
 
+import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
-
-import java.util.function.Consumer;
+import ru.javarush.drogunov.wildisland.enity.game_unit.animals.Animal;
 
 public class Task {
 
     private final GameUnit gameUnit;
-    private final Consumer<GameUnit> operation;
+    private final Cell cell;
 
-    public Task(GameUnit gameUnit, Consumer<GameUnit> operation) {
+    public Task(GameUnit gameUnit, Cell cell) {
         this.gameUnit = gameUnit;
-        this.operation = operation;
-
+        this.cell = cell;
     }
 
-    public void run() {
-        operation.accept(gameUnit);
+    public void toDo() {
+        //TODO зависаю после определенного цикла
+        if (gameUnit instanceof Animal animal) {
+            animal.eat(cell);
+            animal.walk(cell);
+        }
+        gameUnit.multiply(cell);
     }
 }

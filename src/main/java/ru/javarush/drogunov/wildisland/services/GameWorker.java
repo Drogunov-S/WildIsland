@@ -52,9 +52,18 @@ public class GameWorker extends Thread {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-           /* if (days.get() == GameSettings.gameTime) {
-                mainPool.shutdown();
-            }*/
+           if (days.get() == 11) {
+               System.out.println("Days " + days.get());
+               game.getView().showStatistics();
+           }
+            long count = workers.stream().filter(gameUnitWorker -> gameUnitWorker.isFinished()).count();
+            System.out.println(count);
+            if (count == 16) {
+                System.out.println("All dead");
+//                System.out.println(game.getGameMap().getSetUnits());
+                mainPool.shutdownNow();
+                servicePool.shutdownNow();
+            }
         }, PERIOD, PERIOD, TimeUnit.MILLISECONDS);
 
 

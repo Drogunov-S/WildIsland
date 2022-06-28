@@ -67,6 +67,7 @@ public class GameMap {
         return Arrays.deepToString(space);
     }
 
+
     public void lock() {
         lock.lock();
     }

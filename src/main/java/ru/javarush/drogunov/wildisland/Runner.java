@@ -20,5 +20,6 @@ public class Runner {
         Game game = new Game(gameMap, view);
         GameWorker gameWorker= new GameWorker(game);
         gameWorker.start();
+
     }
 }

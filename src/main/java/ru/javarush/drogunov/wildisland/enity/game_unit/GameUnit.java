@@ -20,7 +20,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
     private final String name;
     private final String icon;
 
-    protected double satiety;
+    protected volatile double satiety;
     protected double weight;
     protected Limits limits;
 
@@ -89,6 +89,10 @@ public abstract class GameUnit implements Cloneable, Multiple {
 
         return false;
 
+    }
+
+    public void minusSatiety(double howMany) {
+        satiety -= howMany;
     }
 
 

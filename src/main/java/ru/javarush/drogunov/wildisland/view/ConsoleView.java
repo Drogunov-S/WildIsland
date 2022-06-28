@@ -17,6 +17,8 @@ public class ConsoleView implements View {
     private final int positions = 3;
     private final String border = "═".repeat(positions);
 
+    private int countMinusSatiety = 0;
+
     public ConsoleView(GameMap gameMap) {
         this.gameMap = gameMap;
     }
@@ -33,6 +35,7 @@ public class ConsoleView implements View {
                 //TODO еще раз понять что такое Type
                 Map<String, Set<GameUnit>> residents = cell.getUnitsMap();
                 for (Set<GameUnit> unitsOnCell : residents.values()) {
+                    count(unitsOnCell);
                     if (unitsOnCell.size() > 0) {
                         String gameUnitName = unitsOnCell
                                 .stream()
@@ -64,8 +67,17 @@ public class ConsoleView implements View {
             resultString.append(units.getKey()).append(" = ").append(units.getValue()).append(" ");
             count++;
         }
+        System.out.println("Сытность в минусе: " + countMinusSatiety);
         System.out.println(resultString);
         return resultString.toString();
+    }
+
+    private void count(Set<GameUnit> unitsOnCell) {
+    unitsOnCell.forEach(gameUnit -> {
+        if (gameUnit.getSatiety() < 0) {
+            countMinusSatiety++;
+        }
+    });
     }
 
     @Override

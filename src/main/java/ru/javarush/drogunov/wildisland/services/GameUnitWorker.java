@@ -4,19 +4,18 @@ import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
 import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameUnitWorker implements Runnable {
-
+    private boolean finished = false;
     private final AtomicInteger threadCount = new AtomicInteger(0);
-
     private final Class<?> prototype;
     private final GameMap gameMap;
     private final Queue<Task> tasks = new ConcurrentLinkedDeque<>();
+
 
     public GameUnitWorker(Class<?> prototype, GameMap gameMap) {
         this.prototype = prototype;
@@ -24,7 +23,9 @@ public class GameUnitWorker implements Runnable {
     }
 
     @Override
-    public void run() {
+
+    //TODO А В ТАКОМ ФОРМАТЕ СОЗДАЕТСЯ КУЧА МОНИТОРОВ И КАЖДОЕ ЖИВОТНОЕ СТАНОВИТСЯ МОНИТОРОМ
+   /* public void run() {
         Thread.currentThread().setName(prototype.getSimpleName() + "-" + threadCount.incrementAndGet());
 //        gameMap.lock();
         synchronized (gameMap) {
@@ -48,16 +49,17 @@ public class GameUnitWorker implements Runnable {
 //            gameMap.unlock();
             }
         }
-    }
+    }*/
 
     //TODO ЭТО МЕТОДЫ ИСПОЛЬЗУЕМЫЕ В ПРИМЕРЕ, НО У МЕНЯ СОЗДАЕТСЯ МНОГО ПРИПАРКОВАННЫХ ТРЕДОВ
     // И ЮНИТ ВОРКЕРЫ СОЗДАЮТСЯ НЕ 1Н НА ВСЕХ ЮНИТОВ НА КАРТЕ ОПРЕДЕЛЕННОГО ТИПА
     // А НА ОПРЕДЕЛЕННОГО ТИПА В КАЖДОЙ ЯЧЕЙКЕ
 
-    /*public void run() {
+    public void run() {
         Thread.currentThread().setName(prototype.getSimpleName() + "-" + threadCount.incrementAndGet());
 
         Cell[][] cells = gameMap.getSpace();
+        countLiveCells(gameMap);
         for (Cell[] row : cells) {
             for (Cell cell : row) {
                 try {
@@ -69,7 +71,7 @@ public class GameUnitWorker implements Runnable {
                 }
             }
         }
-//        System.out.println(gameMap.getSetUnits().size());
+
     }
 
     private void progressOnOneCell(Cell cell) {
@@ -86,5 +88,16 @@ public class GameUnitWorker implements Runnable {
 
         tasks.forEach(Task::toDo);
         tasks.clear();
-    }*/
+
+
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    private boolean countLiveCells(GameMap gameMap) {
+        finished = gameMap.getSetUnits().size() == 0;
+        return finished;
+    }
 }

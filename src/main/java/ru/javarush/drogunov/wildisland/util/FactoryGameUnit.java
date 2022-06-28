@@ -26,16 +26,16 @@ public class FactoryGameUnit implements Factory {
             UnitSetting setting = unit.getDeclaredAnnotation(UnitSetting.class);
             String name = setting.name();
             String icon = setting.icon();
-            double weight = setting.weight();
+            double maxWeight = setting.weight();
             int maxPopulation = setting.maxPopulations();
-            Limits limit = new Limits(weight, maxPopulation, setting.maxSteps(), setting.satiety());
+            Limits limit = new Limits(maxWeight, maxPopulation, setting.maxSteps(), setting.satiety());
 
             Constructor<?> constructor;
             try {
                 constructor = unit.getConstructor(String.class, String.class, double.class, Limits.class);
-                GameUnit gameUnit = (GameUnit) constructor.newInstance(name, icon, weight, limit);
+                GameUnit gameUnit = (GameUnit) constructor.newInstance(name, icon, maxWeight, limit);
                 unitsOnCell.add(gameUnit);
-                int randomInteger = Randomizer.getRandomInteger(maxPopulation) - 1;
+                int randomInteger = Randomizer.getRandomDouble(maxPopulation) - 1;
                 for (int i = 0; i < randomInteger; i++) {
                     GameUnit clone = gameUnit.clone(gameUnit);
                     unitsOnCell.add(clone);

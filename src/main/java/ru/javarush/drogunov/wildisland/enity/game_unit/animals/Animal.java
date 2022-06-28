@@ -19,8 +19,8 @@ public abstract class Animal
 
     private double satiety;
 
-    public Animal(String name, String icon, double weight, Limits limits) {
-        super(name, icon, weight, limits);
+    public Animal(String name, String icon, Limits limits) {
+        super(name, icon, limits);
         satiety = limits.getMaxSatiety();
     }
 
@@ -95,7 +95,7 @@ public abstract class Animal
                 if (partner != null) {
                     GameUnit clone = partner.clone(this);
                     cell.getUnitsMap().get(getType()).add(clone);
-                    satiety *= 0.5;
+//                   satiety
                 }
             }
         } finally {

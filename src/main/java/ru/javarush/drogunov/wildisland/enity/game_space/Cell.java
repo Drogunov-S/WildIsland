@@ -55,7 +55,7 @@ public class Cell {
     }
 
     public Cell getNextCell(int maxSteps) {
-        Cell cell = nextCell.get(Randomizer.getRandomInteger(nextCell.size()));
+        Cell cell = nextCell.get(Randomizer.getRandomDouble(nextCell.size()));
         if (maxSteps == 0) {
             return cell;
         }

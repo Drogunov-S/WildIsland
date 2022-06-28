@@ -1,15 +1,15 @@
 package ru.javarush.drogunov.wildisland.enity.game_unit;
 
 public class Limits {
+    private static final double PERCENT_FOR_MULTIPLY = 20;
     private final double maxWeight;
     private final int maxPopulation;
     private final int maxSteps;
     private final double maxSatiety;
-
+//Да я знаю что это колхоз в лимитах хранить и максимум и текущее состояние
     private double weight;
-
-    private int steps;
     private double satiety;
+
     public Limits(double maxWeight, int maxPopulation, int maxSteps, double maxSatiety) {
         this.maxWeight = maxWeight;
         this.maxPopulation = maxPopulation;
@@ -17,17 +17,6 @@ public class Limits {
         this.maxSatiety = maxSatiety;
     }
 
-    public double getWeight() {
-        return weight;
-    }
-
-    public int getSteps() {
-        return steps;
-    }
-
-    public double getSatiety() {
-        return satiety;
-    }
 
     public double getMaxWeight() {
         return maxWeight;
@@ -44,4 +33,5 @@ public class Limits {
     public double getMaxSatiety() {
         return maxSatiety;
     }
+
 }

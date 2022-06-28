@@ -19,14 +19,16 @@ public abstract class GameUnit implements Cloneable, Multiple {
     private final String type = this.getClass().getSimpleName();
     private final String name;
     private final String icon;
-    private double weight;
-    private Limits limits;
+    protected double weight;
+    protected double satiety;
+    protected Limits limits;
 
-    public GameUnit(String name, String icon, double weight, Limits limits) {
+    public GameUnit(String name, String icon, Limits limits) {
         this.name = name;
         this.icon = icon;
-        this.weight = weight;
         this.limits = limits;
+        this.weight = Randomizer.getRandomDouble(limits.getMaxWeight());
+        this.satiety = Randomizer.getRandomDouble(limits.getMaxSatiety());
     }
     public String getType() {
         return type;
@@ -59,7 +61,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
     protected GameUnit clone() throws CloneNotSupportedException {
         GameUnit clone = (GameUnit) super.clone();
         clone.id = indicator.incrementAndGet();
-        clone.weight = Randomizer.getRandomInteger(clone.weight);
+        clone.weight = Randomizer.getRandomDouble(clone.weight);
         return clone;
     }
 @SuppressWarnings("I'm don't undestend whats to do it")
@@ -77,9 +79,6 @@ public abstract class GameUnit implements Cloneable, Multiple {
         try {
             Set<GameUnit> set = cell.getUnitsMap().get(this.getType());
             set.remove(this);
-            /*if (!set.contains(this)) {
-                System.out.println("удален");
-                return true;*/
 //            }
         } finally {
             cell.unlockCell();

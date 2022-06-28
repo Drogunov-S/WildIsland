@@ -3,12 +3,13 @@ package ru.javarush.drogunov.wildisland.enity.game_space;
 
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class GameMap {
     private final Cell[][] space;
+    private final Lock lock = new ReentrantLock(true);
 
 
     public GameMap(GameSettings gameSettings) {
@@ -16,6 +17,7 @@ public class GameMap {
         int length = gameSettings.getLength();
         space = new Cell[width][length];
     }
+
 
     public int getCountLine() {
         return space.length;
@@ -39,8 +41,37 @@ public class GameMap {
         return setUnitsOnGameMap;
     }
 
+    public Map<Cell, Map<String, Set<GameUnit>>> getAllUnits() {
+        Map<Cell, Map<String, Set<GameUnit>>> allUnits = new HashMap<>();
+        Arrays.stream(space)
+                .forEach(cells ->
+                        Arrays.stream(cells)
+                                .forEach(cell -> {
+                                    Map<String, Set<GameUnit>> mapUnitsOnCell = cell.getUnitsMap();
+                                    if (allUnits.containsKey(cell)) {
+                                        Map<String, Set<GameUnit>> stringGameUnitMap = allUnits.get(cell);
+                                        mapUnitsOnCell.forEach((name, unitsOnCell) -> {
+                                            if (stringGameUnitMap.containsKey(name)) {
+                                                stringGameUnitMap.get(name).addAll(mapUnitsOnCell.get(name));
+                                            }
+                                        });
+                                    } else {
+                                        allUnits.put(cell, mapUnitsOnCell);
+                                    }
+                                }));
+        return allUnits;
+    }
+
     @Override
     public String toString() {
         return Arrays.deepToString(space);
+    }
+
+    public void lock() {
+        lock.lock();
+    }
+
+    public void unlock(){
+        lock.unlock();
     }
 }

@@ -36,64 +36,32 @@ public class GameWorker extends Thread {
                 .stream()
                 .map(p -> new GameUnitWorker(p, game.getGameMap()))
                 .toList();
-        //Виновник добавления новых задач при этом старые не успевают завершится
         mainPool.scheduleWithFixedDelay(() -> {
             ExecutorService servicePool = Executors.newFixedThreadPool(2);
             Thread.currentThread().setName("GameWorker MainPool");
             workers.forEach(servicePool::submit);
             servicePool.shutdown();
+
+            System.out.println("\nDay on island: " + days.get());
             try {
-                if (servicePool.awaitTermination(PERIOD, TimeUnit.MILLISECONDS)) {
-//                    game.getView().showMap();
-                    game.getView().showStatistics();
-//                    game.getView().showCountCellUnits();
-                    days.incrementAndGet();
+                if (servicePool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS)) {
+//                        game.getView().showMap();
+                        game.getView().showStatistics();
+    //                    game.getView().showCountCellUnits();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-           if (days.get() == 11) {
-               System.out.println("Days " + days.get());
-               game.getView().showStatistics();
-           }
-            long count = workers.stream().filter(gameUnitWorker -> gameUnitWorker.isFinished()).count();
-            System.out.println(count);
-            if (count == 16) {
-                System.out.println("All dead");
-//                System.out.println(game.getGameMap().getSetUnits());
+
+            if (game.getGameMap().getSizeAlive() == 0) {
+                System.out.println("Мир пуст");
+                game.getView().showCountCellUnits();
                 mainPool.shutdownNow();
-                servicePool.shutdownNow();
             }
+            days.incrementAndGet();
+
+
         }, PERIOD, PERIOD, TimeUnit.MILLISECONDS);
 
-
-        /*ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(2);
-List<Ga>
-
-
-        Collection<Set<GameUnit>> values = game.getGameMap().getMapGameUnits().values();
-        for (Set<GameUnit> value : values) {
-            value.stream().map(gameUnit -> new GameUnitWorker(gameUnit, game.getGameMap());
-        }
-
-
-        List<GameUnit> workers = game.getGameMap().getMapGameUnits().values()
-                .stream()
-                .map(p -> p.stream().map( gameUnit ->
-                                new GameUnitWorker(p, game.getGameMap()))
-                        .toList();
-        mainPool.scheduleAtFixedRate(() -> {
-            ExecutorService servicePool = Executors.newFixedThreadPool(4);
-            workers.forEach(servicePool::submit);
-            servicePool.shutdown();
-            try {
-                if (servicePool.awaitTermination(PERIOD, TimeUnit.MILLISECONDS)) {
-                    game.getView().showMap();
-                    game.getView().showStatistics();
-                }
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }, PERIOD, PERIOD, TimeUnit.MILLISECONDS); //TODO need config*/
-    }
+}
 }

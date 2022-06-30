@@ -11,7 +11,7 @@ public class GameSettings {
 
     @Getter
     @Settings(code = 2, name = "Длина игрового поля")
-    private final int length = 5;//20
+    private final int length = 10;//20
 //временно статик и паблик
     @Settings(code = 3, name = "Максимальное время игры")
     public static int gameTime = 10;

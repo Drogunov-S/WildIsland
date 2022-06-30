@@ -55,7 +55,7 @@ public class Cell {
     }
 
     public Cell getNextCell(int maxSteps) {
-        Cell cell = nextCell.get(Randomizer.getRandomDouble(nextCell.size()));
+        Cell cell = nextCell.get(Randomizer.getRandom(nextCell.size()));
         if (maxSteps == 0) {
             return cell;
         }
@@ -90,5 +90,20 @@ public class Cell {
 
         public void unlockCell () {
             lock.unlock();
+        }
+
+        public GameUnit getTarget(Class<?> target) {
+//            Iterator<GameUnit> iterator1 = gameUnitList.get(target.getSimpleName()).iterator();
+//            while (iterator1.hasNext()) {
+//                GameUnit next = iterator1.next();
+//                //TODO включить вероятность съедания
+//                if (next.getClass() == target) {
+//                    if (Randomizer.getResult(pair.getValue())) {
+//                        System.out.println("Съел " + getName() + " " + getId());
+////                                saveDie(cell);
+//                        iterator1.remove();
+                        return null;
+//                    }
+//                }
         }
     }

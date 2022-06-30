@@ -26,7 +26,6 @@ public class ConsoleView implements View {
     @Override
     @SuppressWarnings("I don't undestande what to do it this warrning")
     public String showStatistics() {
-        System.out.println("Всего на карте: " + gameMap.getSetUnits().size());
         Cell[][] cells = gameMap.getSpace();
         //TODO не могу как передать компаратор для сортировки по значению
         Map<String, Integer> statisticsMap = new TreeMap<>();
@@ -55,7 +54,9 @@ public class ConsoleView implements View {
                 }
             }
         }
+        String all = "Всего на карте: " + gameMap.getSetUnits().size() + '\n';
         StringBuilder resultString = new StringBuilder();
+        resultString.append(all);
         int count = 0;
 
         for (Map.Entry<String, Integer> units : statisticsMap.entrySet()) {
@@ -68,6 +69,7 @@ public class ConsoleView implements View {
             count++;
         }
         System.out.println("Сытность в минусе: " + countMinusSatiety);
+        countMinusSatiety = 0;
         System.out.println(resultString);
         return resultString.toString();
     }

@@ -27,7 +27,9 @@ public class Task {
             if (gameUnit.getSatiety() < 0) {
                 gameUnit.saveDie(cell);
             }
-            animal.eat(cell);
+            /*do {
+                animal.eat(cell) ? animal.plusSatiety();
+            } while (animal.isFullSatiety());*/
             animal.walk(cell);
             gameUnit.minusSatiety(decreaseForWalk);
         }

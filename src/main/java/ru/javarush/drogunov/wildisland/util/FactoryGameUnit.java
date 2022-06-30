@@ -35,7 +35,7 @@ public class FactoryGameUnit implements Factory {
                 constructor = unit.getConstructor(String.class, String.class, Limits.class);
                 GameUnit gameUnit = (GameUnit) constructor.newInstance(name, icon, limit);
                 unitsOnCell.add(gameUnit);
-                int randomInteger = Randomizer.getRandomDouble(maxPopulation) - 1;
+                int randomInteger = Randomizer.getRandom(maxPopulation) - 1;
                 for (int i = 0; i < randomInteger; i++) {
                     GameUnit clone = gameUnit.clone(gameUnit);
                     unitsOnCell.add(clone);

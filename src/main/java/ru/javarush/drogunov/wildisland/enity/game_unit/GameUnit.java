@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(of = "id")
 public abstract class GameUnit implements Cloneable, Multiple {
 
     private static final AtomicLong indicator = new AtomicLong(System.currentTimeMillis());
@@ -28,7 +28,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
         this.name = name;
         this.icon = icon;
         this.limits = limits;
-        this.weight = Randomizer.getRandomDouble(limits.getMaxWeight());
+        this.weight = Randomizer.getRandom(limits.getMaxWeight());
     }
 
     public String getType() {
@@ -63,6 +63,8 @@ public abstract class GameUnit implements Cloneable, Multiple {
     protected GameUnit clone() throws CloneNotSupportedException {
         GameUnit clone = (GameUnit) super.clone();
         clone.id = indicator.incrementAndGet();
+        clone.weight = Randomizer.getRandom(limits.getMaxWeight());
+        clone.satiety = Randomizer.getRandom(limits.getMaxSatiety());
         return clone;
     }
 
@@ -82,18 +84,13 @@ public abstract class GameUnit implements Cloneable, Multiple {
         try {
             Set<GameUnit> set = cell.getUnitsMap().get(this.getType());
             set.remove(this);
-//            }
         } finally {
             cell.unlockCell();
         }
-
         return false;
-
     }
 
     public void minusSatiety(double howMany) {
         satiety -= howMany;
     }
-
-
 }

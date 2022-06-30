@@ -3,10 +3,17 @@ package ru.javarush.drogunov.wildisland.util;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Randomizer {
-    public static int getRandomDouble(int to) {
+    public static int getRandom(int to) {
+        if (to == 0) {
+            return 0;
+        }
+
         return ThreadLocalRandom.current().nextInt(to);
     }
-    public static double getRandomDouble(double to) {
+    public static double getRandom(double to) {
+        if (to == 0) {
+            return 0.0;
+        }
         return ThreadLocalRandom.current().nextDouble(to);
     }
 

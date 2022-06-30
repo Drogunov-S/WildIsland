@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static ru.javarush.drogunov.wildisland.Constants.PROBABILITY_EATING;
+
 public class GameMap {
     private final Cell[][] space;
     private final Lock lock = new ReentrantLock(true);
@@ -67,12 +69,31 @@ public class GameMap {
         return Arrays.deepToString(space);
     }
 
+    public int getSizeAlive() {
+        lock();
+        int size = getSetUnits().size();
+        unlock();
+        return size;
+    }
 
     public void lock() {
         lock.lock();
     }
 
-    public void unlock(){
+    public void unlock() {
         lock.unlock();
     }
+
+
+    public GameUnit getTarget(GameUnit eater, Cell cell) {
+        Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(this.getClass());
+        Map<String, Set<GameUnit>> gameUnitList = cell.getUnitsMap();
+
+        for (var pair : targetUnits.entrySet()) {
+            Class<?> target = pair.getKey();
+
+        }
+        return null;
+    }
+
 }

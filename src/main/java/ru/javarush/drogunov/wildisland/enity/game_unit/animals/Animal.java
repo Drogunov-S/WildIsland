@@ -21,12 +21,16 @@ public abstract class Animal
 
     public Animal(String name, String icon, Limits limits) {
         super(name, icon, limits);
-        super.satiety = Randomizer.getRandomDouble(limits.getMaxSatiety());
+        super.satiety = Randomizer.getRandom(limits.getMaxSatiety());
     }
 
 
     @Override
     public boolean eat(Cell cell) {
+        if (satiety < 0) {
+            saveDie(cell);
+            return false;
+        }
         cell.lockCell();
         try {
             Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(this.getClass());
@@ -39,11 +43,12 @@ public abstract class Animal
                     GameUnit next = iterator1.next();
                     //TODO включить вероятность съедания
                     if (next.getClass() == target) {
-//                        if (Randomizer.getResult(pair.getValue())) {
-//                        saveDie(cell);
-                        iterator1.remove();
-                        return true;
-//                        }
+                        if (Randomizer.getResult(pair.getValue())) {
+                            System.out.println("Съел " + getName() + " " + getId());
+//                                saveDie(cell);
+                            iterator1.remove();
+                            return true;
+                        }
                     }
                 }
             }
@@ -51,6 +56,10 @@ public abstract class Animal
             cell.unlockCell();
         }
         return false;
+    }
+
+    public boolean isFullSatiety() {
+        return this.satiety == limits.getMaxSatiety();
     }
 
     /*public void eat(Cell currentCell) {
@@ -87,6 +96,10 @@ public abstract class Animal
 
     @Override
     public boolean multiply(Cell cell) {
+        if (satiety < 0) {
+            saveDie(cell);
+            return false;
+        }
         cell.lockCell();
         try {
 //            System.out.println(getName() + " multi");
@@ -108,6 +121,7 @@ public abstract class Animal
     public boolean walk(Cell cell) {
         if (satiety < 0) {
             saveDie(cell);
+            return false;
         }
         cell.lockCell();
         try {
@@ -117,6 +131,10 @@ public abstract class Animal
         }
 
         Cell nextCell = cell.getNextCell(this.getLimits().getMaxSteps());
+        if (satiety < 0) {
+            saveDie(cell);
+            return false;
+        }
 
         nextCell.lockCell();
         try {

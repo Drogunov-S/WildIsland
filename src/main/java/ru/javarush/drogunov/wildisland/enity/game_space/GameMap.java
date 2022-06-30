@@ -1,6 +1,7 @@
 package ru.javarush.drogunov.wildisland.enity.game_space;
 
 
+import ru.javarush.drogunov.wildisland.enity.TargetGameUnit;
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 
 import java.util.*;
@@ -84,14 +85,22 @@ public class GameMap {
         lock.unlock();
     }
 
+//TODO в targetUnits хранится вероятность съедания, но согласно ООП как я его понимаю, GameMap
+//    не может знать о вероятности съедания так как это бизнес логика,
+//    Вопрос: Откуда мне нужно было вернуть цифру вероятности для Task, так как она необходима в ней
+//    Как раз в Task я стараюсь разместить всю бизнес логику?
+//    Вероятный ответ: GameMap может знать о типах Юнитов или тянуть вероятность съедания с настроек?
 
-    public GameUnit getTarget(GameUnit eater, Cell cell) {
-        Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(this.getClass());
-        Map<String, Set<GameUnit>> gameUnitList = cell.getUnitsMap();
+    public TargetGameUnit getTarget(GameUnit eater, Cell cell) {
+        Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(eater.getClass());
 
         for (var pair : targetUnits.entrySet()) {
-            Class<?> target = pair.getKey();
-
+            String simpleName = pair
+                    .getKey()
+                    .getSimpleName();
+            Integer probability = pair.getValue();
+            GameUnit target = cell.getTarget(simpleName);
+            return new TargetGameUnit(target, probability);
         }
         return null;
     }

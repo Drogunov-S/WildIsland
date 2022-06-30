@@ -81,7 +81,7 @@ public class GameUnitWorker implements Runnable {
         }
         cell.lockCell();
         try {
-            allUnitsOnCell.forEach(gameUnit -> tasks.add(new Task(gameUnit, cell)));
+            allUnitsOnCell.forEach(gameUnit -> tasks.add(new Task(gameUnit, cell, gameMap)));
         } finally {
             cell.unlockCell();
         }

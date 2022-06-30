@@ -12,7 +12,6 @@ public class Cell {
     private final Lock lock = new ReentrantLock(true);
 
     @Getter
-//    private volatile List<GameUnit> gameUnitList;
     private final List<Cell> nextCell = new ArrayList<>();
 
     public Map<String, Set<GameUnit>> getUnitsMap() {
@@ -92,7 +91,23 @@ public class Cell {
             lock.unlock();
         }
 
-        public GameUnit getTarget(Class<?> target) {
+        public GameUnit getTarget(String targetUnit) {
+        lockCell();
+            try {
+                Iterator<GameUnit> iterator = unitsOnCell
+                        .get(targetUnit)
+                        .iterator();
+                while (iterator.hasNext()) {
+                    GameUnit next = iterator.next();
+                    if (next.isDie()){
+                        continue;
+                    }
+                    return next;
+                }
+            } finally {
+            unlockCell();
+        }
+
 //            Iterator<GameUnit> iterator1 = gameUnitList.get(target.getSimpleName()).iterator();
 //            while (iterator1.hasNext()) {
 //                GameUnit next = iterator1.next();
@@ -102,8 +117,14 @@ public class Cell {
 //                        System.out.println("Съел " + getName() + " " + getId());
 ////                                saveDie(cell);
 //                        iterator1.remove();
-                        return null;
 //                    }
 //                }
+            return null;
         }
+
+    public void kickGameUnit(GameUnit targetUnit) {
+        lockCell();
+        unitsOnCell.remove(targetUnit);
+        lock.unlock();
     }
+}

@@ -26,8 +26,15 @@ public abstract class Animal
 
 
     @Override
-    public boolean eat(Cell cell) {
-        if (satiety < 0) {
+    public boolean eat(GameUnit gameUnit) {
+        //Описать как есть животное
+
+        return true;
+
+
+
+        //рабочий код
+        /*if (satiety < 0) {
             saveDie(cell);
             return false;
         }
@@ -55,7 +62,7 @@ public abstract class Animal
         } finally {
             cell.unlockCell();
         }
-        return false;
+        return false;*/
     }
 
     public boolean isFullSatiety() {

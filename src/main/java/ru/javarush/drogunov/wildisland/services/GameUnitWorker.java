@@ -22,38 +22,6 @@ public class GameUnitWorker implements Runnable {
         this.gameMap = gameMap;
     }
 
-    @Override
-
-    //TODO А В ТАКОМ ФОРМАТЕ СОЗДАЕТСЯ КУЧА МОНИТОРОВ И КАЖДОЕ ЖИВОТНОЕ СТАНОВИТСЯ МОНИТОРОМ
-   /* public void run() {
-        Thread.currentThread().setName(prototype.getSimpleName() + "-" + threadCount.incrementAndGet());
-//        gameMap.lock();
-        synchronized (gameMap) {
-            try {
-                Map<Cell, Map<String, Set<GameUnit>>> allUnits = gameMap.getAllUnits();
-                allUnits.forEach((cell, mapUnitsOnGameMap) ->
-                        mapUnitsOnGameMap
-                                .forEach((name, setUnitsOnGameMap) -> setUnitsOnGameMap
-                                        .stream()
-                                        .filter(gameUnit -> gameUnit.getClass() == prototype)
-                                        .forEach(gameUnit -> tasks.add(new Task(gameUnit, cell)))));
-//        gameMap.unlock();
-
-                tasks.forEach(Task::toDo);
-                tasks.clear();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Whats wrong?");
-                System.exit(999);
-//            gameMap.unlock();
-            }
-        }
-    }*/
-
-    //TODO ЭТО МЕТОДЫ ИСПОЛЬЗУЕМЫЕ В ПРИМЕРЕ, НО У МЕНЯ СОЗДАЕТСЯ МНОГО ПРИПАРКОВАННЫХ ТРЕДОВ
-    // И ЮНИТ ВОРКЕРЫ СОЗДАЮТСЯ НЕ 1Н НА ВСЕХ ЮНИТОВ НА КАРТЕ ОПРЕДЕЛЕННОГО ТИПА
-    // А НА ОПРЕДЕЛЕННОГО ТИПА В КАЖДОЙ ЯЧЕЙКЕ
 
     public void run() {
         Thread.currentThread().setName(prototype.getSimpleName() + "-" + threadCount.incrementAndGet());
@@ -90,10 +58,6 @@ public class GameUnitWorker implements Runnable {
         tasks.clear();
 
 
-    }
-
-    public boolean isFinished() {
-        return finished;
     }
 
     private boolean countLiveCells(GameMap gameMap) {

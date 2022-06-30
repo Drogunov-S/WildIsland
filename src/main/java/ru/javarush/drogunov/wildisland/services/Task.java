@@ -23,7 +23,7 @@ public class Task {
         this.cell = cell;
         this.gameMap = gameMap;
         decreaseForWalk = gameUnit.getLimits().getMaxSatiety() * 0.3;
-        decreaseForMultiply = gameUnit.getLimits().getMaxSatiety() * 0.5;
+        decreaseForMultiply = gameUnit.getLimits().getMaxSatiety() * 0.3;
     }
 
     public void toDo() {
@@ -34,32 +34,40 @@ public class Task {
             }
             taskEat(animal);
 //            animal.eat(cell);
-//            animal.walk(cell);
-//            gameUnit.minusSatiety(decreaseForWalk);
+            animal.walk(cell);
+            gameUnit.subtractionSatiety(decreaseForWalk);
         }
-//        gameUnit.multiply(cell);
-//        gameUnit.minusSatiety(decreaseForMultiply);
+        gameUnit.multiply(cell);
+        gameUnit.subtractionSatiety(decreaseForMultiply);
     }
 
-    private boolean taskEat(Animal eaterAnimal) {
+    private void taskEat(Animal eaterAnimal) {
+        int count = 0;
+        if (eaterAnimal.isFullSatiety()) {
+            return;
+        }
         TargetGameUnit target = gameMap.getTarget(gameUnit, cell);
-        if (!target.hasTarget()) {
-            return false;
+        int probability = target.probability();
+        do {
+            if (Randomizer.getResult(probability)) {
+                try {
+                    GameUnit targetUnit = target.targetUnit();
+                    cell.kickGameUnit(targetUnit);
+                    eaterAnimal.eat(targetUnit);
+                    count++;
+                } catch (UnitTargetNotFoundException ignored) {
+                    break;
+                    //TODO тут так понимаю логирование
+                }
+                //TODO Что лучше было бы рекурсия или то что сделано do\while
+            } /*else {
+                taskEat(eaterAnimal);
+            }*/
+        } while (!eaterAnimal.isFullSatiety());
+        if (count >= 2) {
+            System.out.println(count + " ВСЕГО СЪЕДЕНО----------------------" + eaterAnimal.isFullSatiety()
+                    + " " + eaterAnimal.getSatiety() + " " + eaterAnimal.getLimits().getMaxSatiety());
         }
-        if (eaterAnimal.getSatiety() >= eaterAnimal.getLimits().getMaxSatiety()) {
-            return true;
-        }
-        int probability = target.getProbability();
-        if (Randomizer.getResult(probability)) {
-            try {
-                GameUnit targetUnit = target.getTargetUnit();
-                cell.kickGameUnit(targetUnit);
-                eaterAnimal.eat(targetUnit);
-            } catch (UnitTargetNotFoundException e) {
-                return false;
-            }
-        }
-        return false;
     }
 
 }

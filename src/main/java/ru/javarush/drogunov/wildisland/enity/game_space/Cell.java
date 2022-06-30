@@ -119,7 +119,6 @@ public class Cell {
         lockCell();
         String simpleName = targetUnit.getClass().getSimpleName();
         unitsOnCell.get(simpleName).remove(targetUnit);
-//        System.out.println(targetUnit.getName() + " удален " + targetUnit.getId());
         lock.unlock();
     }
 }

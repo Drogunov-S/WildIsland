@@ -96,8 +96,8 @@ public abstract class GameUnit implements Cloneable, Multiple {
         return false;
     }
 
-    public void minusSatiety(double howMany) {
-        satiety -= howMany;
+    public void subtractionSatiety(double subtract) {
+        satiety -= subtract;
     }
 
     public void lock() {

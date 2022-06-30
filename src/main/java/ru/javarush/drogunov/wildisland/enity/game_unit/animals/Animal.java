@@ -7,99 +7,50 @@ import ru.javarush.drogunov.wildisland.interfaces.Eating;
 import ru.javarush.drogunov.wildisland.interfaces.Walkable;
 import ru.javarush.drogunov.wildisland.util.Randomizer;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import static ru.javarush.drogunov.wildisland.Constants.PROBABILITY_EATING;
-
 
 public abstract class Animal
         extends GameUnit
         implements Walkable, Eating {
 
+    private static final double APPROVE_ERROR = 0.05;
 
     public Animal(String name, String icon, Limits limits) {
         super(name, icon, limits);
         super.satiety = Randomizer.getRandom(limits.getMaxSatiety());
     }
 
-
     @Override
-    public boolean eat(GameUnit gameUnit) {
-        //Описать как есть животное
+    public boolean eat(GameUnit target) {
+        //TODO А есть ли тут необходимость в BigDecimal???
+        // Комментарии оставлены специально
+//        BigDecimal weightTargetUnit = new BigDecimal(target.getWeight());
+//        BigDecimal neededSatiety = new BigDecimal(this.satiety - limits.getMaxSatiety());
+//        BigDecimal result = weightTargetUnit.subtract(neededSatiety);
+        //TODO и внутри класса лучше как обратятся\записывать через Getter\Setter??
+        // Это поля этого класса но родителя
+        double maxSatiety = this.limits.getMaxSatiety();
+        double neededSatiety = this.satiety - maxSatiety;
+        double weightTarget = target.getWeight();
+        double result = weightTarget - neededSatiety;
+        //TODO вот погрешность можно было бы обработать тут или обработать в сеттере
+        this.plusSatiety(result > 0 ? neededSatiety : weightTarget);
+        return satiety >= maxSatiety;
 
-        return true;
+    }
 
+    private void plusSatiety(double plus) {
+        double error = satiety * APPROVE_ERROR;
+        double result = satiety + plus;
+        double maxSatiety = limits.getMaxSatiety();
 
+//        System.out.printf("Error %.3f, result %.3f = sati %.3f + plus %.3f   SATY = %b\n", APPROVE_ERROR, result, satiety, plus, isFullSatiety());
 
-        //рабочий код
-        /*if (satiety < 0) {
-            saveDie(cell);
-            return false;
-        }
-        cell.lockCell();
-        try {
-            Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(this.getClass());
-            Map<String, Set<GameUnit>> gameUnitList = cell.getUnitsMap();
-
-            for (var pair : targetUnits.entrySet()) {
-                Class<?> target = pair.getKey();
-                Iterator<GameUnit> iterator1 = gameUnitList.get(target.getSimpleName()).iterator();
-                while (iterator1.hasNext()) {
-                    GameUnit next = iterator1.next();
-                    //TODO включить вероятность съедания
-                    if (next.getClass() == target) {
-                        if (Randomizer.getResult(pair.getValue())) {
-                            System.out.println("Съел " + getName() + " " + getId());
-//                                saveDie(cell);
-                            iterator1.remove();
-                            return true;
-                        }
-                    }
-                }
-            }
-        } finally {
-            cell.unlockCell();
-        }
-        return false;*/
+        satiety = (result - maxSatiety <= error) ? maxSatiety : result;
     }
 
     public boolean isFullSatiety() {
-        return this.satiety == limits.getMaxSatiety();
+        return this.satiety >= limits.getMaxSatiety();
     }
-
-    /*public void eat(Cell currentCell) {
-        currentCell.lockCell();
-
-        try {
-
-//        System.out.println("Поел " + Thread.currentThread().getName());
-            Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(this.getClass());
-            Map<Type, Set<GameUnit>> unitsOnMap = currentCell.getMapGameUnits();
-
-
-            int countUnits = 0;
-
-            for(var pair : targetUnits.entrySet()) {
-                Class<?> key = pair.getKey();
-                Integer value = pair.getValue();
-                Set<GameUnit> set = unitsOnMap.get(key);
-                countUnits += set.size();
-                if (set != null) {
-                    Iterator<GameUnit> iterator = set.iterator();
-                    while (iterator.hasNext()) {
-                        if (Randomizer.getRandomInteger() <= value) {
-                            iterator.remove();
-                        }
-                    }
-                    System.out.print(countUnits);
-                }
-            }
-        } finally {
-            currentCell.unlockCell();
-        }
-    }*/
 
     @Override
     public boolean multiply(Cell cell) {

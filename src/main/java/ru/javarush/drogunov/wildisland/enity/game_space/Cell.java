@@ -70,61 +70,56 @@ public class Cell {
     }
 
 
-        public GameUnit getPair (GameUnit unit){
-            Set<GameUnit> set = unitsOnCell.get(unit.getType());
-            if (set == null || set.size() < 1) {
-                return null;
-            }
-            for (GameUnit gameUnit : set) {
-                if (unit != gameUnit) {
-                    return gameUnit;
-                }
-            }
+    public GameUnit getPair(GameUnit unit) {
+        Set<GameUnit> set = unitsOnCell.get(unit.getType());
+        if (set == null || set.size() < 1) {
             return null;
         }
-
-        public void lockCell () {
-            lock.lock();
+        for (GameUnit gameUnit : set) {
+            if (unit != gameUnit) {
+                return gameUnit;
+            }
         }
+        return null;
+    }
 
-        public void unlockCell () {
-            lock.unlock();
-        }
+    public void lockCell() {
+        lock.lock();
+    }
 
-        public GameUnit getTarget(String targetUnit) {
+    public void unlockCell() {
+        lock.unlock();
+    }
+
+    public GameUnit getTarget(String nameTargetUnit) {
         lockCell();
-            try {
-                Iterator<GameUnit> iterator = unitsOnCell
-                        .get(targetUnit)
-                        .iterator();
-                while (iterator.hasNext()) {
-                    GameUnit next = iterator.next();
-                    if (next.isDie()){
-                        continue;
-                    }
-                    return next;
-                }
-            } finally {
+        try {
+            Set<GameUnit> setTargetUnits = unitsOnCell.get(nameTargetUnit);
+            if (setTargetUnits.size() == 0) {
+
+                //TODO А вообще нужна ли такая ошибка?
+                // И где ее обрабатывать в GameMap или выше.
+                // Я ее бросание ошибки добавил в TargetGameUnit при значении null, комментарии оставил хочу совет
+                // строки 105 111 оставил специально
+//                throw new UnitTargetNotFoundException("Target not found");
+            }
+            //noinspection OptionalGetWithoutIsPresent
+            GameUnit targetUnit = setTargetUnits.stream()
+                    .filter(gameUnit -> !gameUnit.isDie())
+                    .findAny()
+                    .orElseGet(() -> null);
+//                    .orElseThrow(() -> new UnitTargetNotFoundException("All units don't access"));
+            return targetUnit;
+        } finally {
             unlockCell();
         }
-
-//            Iterator<GameUnit> iterator1 = gameUnitList.get(target.getSimpleName()).iterator();
-//            while (iterator1.hasNext()) {
-//                GameUnit next = iterator1.next();
-//                //TODO включить вероятность съедания
-//                if (next.getClass() == target) {
-//                    if (Randomizer.getResult(pair.getValue())) {
-//                        System.out.println("Съел " + getName() + " " + getId());
-////                                saveDie(cell);
-//                        iterator1.remove();
-//                    }
-//                }
-            return null;
-        }
+    }
 
     public void kickGameUnit(GameUnit targetUnit) {
         lockCell();
-        unitsOnCell.remove(targetUnit);
+        String simpleName = targetUnit.getClass().getSimpleName();
+        unitsOnCell.get(simpleName).remove(targetUnit);
+//        System.out.println(targetUnit.getName() + " удален " + targetUnit.getId());
         lock.unlock();
     }
 }

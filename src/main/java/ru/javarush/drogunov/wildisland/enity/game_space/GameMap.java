@@ -99,7 +99,9 @@ public class GameMap {
                     .getKey()
                     .getSimpleName();
             Integer probability = pair.getValue();
+
             GameUnit target = cell.getTarget(simpleName);
+
             return new TargetGameUnit(target, probability);
         }
         return null;

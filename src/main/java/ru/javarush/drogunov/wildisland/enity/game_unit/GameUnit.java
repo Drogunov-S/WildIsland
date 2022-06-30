@@ -8,6 +8,7 @@ import ru.javarush.drogunov.wildisland.interfaces.Multiple;
 import ru.javarush.drogunov.wildisland.util.Randomizer;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -21,8 +22,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
     private final String type = this.getClass().getSimpleName();
     private final String name;
     private final String icon;
-
-    protected boolean access = true;
+    protected AtomicBoolean access = new AtomicBoolean(true);
 
     protected Lock lock = new ReentrantLock(true);
 
@@ -101,18 +101,17 @@ public abstract class GameUnit implements Cloneable, Multiple {
     }
 
     public void lock() {
+        access.getAndSet(false);
         lock.lock();
-        access = false;
     }
 
     public void unlock() {
+        access.getAndSet(true);
         lock.unlock();
-        access = true;
     }
 
     public boolean isDie() {
-        access = false;
-        return true;
+        return !access.getPlain();
     }
 
 }

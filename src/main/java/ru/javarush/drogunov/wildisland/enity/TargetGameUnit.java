@@ -1,12 +1,14 @@
 package ru.javarush.drogunov.wildisland.enity;
 
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
+import ru.javarush.drogunov.wildisland.exceptions.UnitTargetNotFoundException;
+
 //TODO Что такое Record?
 public class TargetGameUnit {
     private final GameUnit targetUnit;
 
     private final int probability;
-
+    //TODO Сделать атомником если этот параметр понадобится
     private boolean hasTarget = false;
 
     public TargetGameUnit(GameUnit targetUnit, int probability) {
@@ -21,6 +23,9 @@ public class TargetGameUnit {
         hasTarget = true;
     }
     public GameUnit getTargetUnit() {
+        if (targetUnit == null) {
+            throw new UnitTargetNotFoundException("Target units not found in cell");
+        }
         return targetUnit;
     }
 

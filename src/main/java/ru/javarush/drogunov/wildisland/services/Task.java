@@ -5,6 +5,7 @@ import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
 import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 import ru.javarush.drogunov.wildisland.enity.game_unit.animals.Animal;
+import ru.javarush.drogunov.wildisland.exceptions.UnitTargetNotFoundException;
 import ru.javarush.drogunov.wildisland.util.Randomizer;
 
 public class Task {
@@ -50,10 +51,13 @@ public class Task {
         }
         int probability = target.getProbability();
         if (Randomizer.getResult(probability)) {
-            GameUnit targetUnit = target.getTargetUnit();
-            //TODO А кому говорить
-            cell.kickGameUnit(targetUnit);
-            eaterAnimal.eat(targetUnit);
+            try {
+                GameUnit targetUnit = target.getTargetUnit();
+                cell.kickGameUnit(targetUnit);
+                eaterAnimal.eat(targetUnit);
+            } catch (UnitTargetNotFoundException e) {
+                return false;
+            }
         }
         return false;
     }

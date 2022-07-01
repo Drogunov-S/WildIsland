@@ -36,7 +36,7 @@ public class GameWorker extends Thread {
                 .map(p -> new GameUnitWorker(p, game.getGameMap()))
                 .toList();
         mainPool.scheduleWithFixedDelay(() -> {
-            ExecutorService servicePool = Executors.newFixedThreadPool(2);
+            ExecutorService servicePool = Executors.newFixedThreadPool(16);
             Thread.currentThread().setName("GameWorker MainPool");
             workers.forEach(servicePool::submit);
             servicePool.shutdown();
@@ -44,9 +44,10 @@ public class GameWorker extends Thread {
 
             try {
                 if (servicePool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS)) {
+                    game.getGameMap().accessOnAll();
 //                        game.getView().showMap();
-                        game.getView().showStatistics();
-    //                    game.getView().showCountCellUnits();
+                    game.getView().showStatistics();
+//                        game.getView().showCountCellUnits();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);

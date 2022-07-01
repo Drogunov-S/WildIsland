@@ -3,6 +3,7 @@ package ru.javarush.drogunov.wildisland.view;
 import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
 import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
+import ru.javarush.drogunov.wildisland.util.Statistics;
 
 import java.util.Map;
 import java.util.Set;
@@ -16,9 +17,6 @@ public class ConsoleView implements View {
     private final GameMap gameMap;
     private final int positions = 3;
     private final String border = "═".repeat(positions);
-    AtomicInteger days = new AtomicInteger();
-
-    private int countMinusSatiety = 0;
 
     public ConsoleView(GameMap gameMap) {
         this.gameMap = gameMap;
@@ -27,6 +25,8 @@ public class ConsoleView implements View {
     @Override
     @SuppressWarnings("I don't undestande what to do it this warrning")
     public String showStatistics() {
+        Set<GameUnit> collect = gameMap.getSetUnits().stream().filter(gameUnit -> !gameUnit.isAccess()).collect(Collectors.toSet());
+collect.size();
 
         Cell[][] cells = gameMap.getSpace();
         //TODO не могу как передать компаратор для сортировки по значению
@@ -57,12 +57,22 @@ public class ConsoleView implements View {
         }
 
         StringBuilder resultString = new StringBuilder();
-        resultString.append("\n--- Day on island: ")
-                .append(days.incrementAndGet())
-                .append("\n--- Всего на карте: ")
-                .append(gameMap.getSetUnits().size())
+        resultString.append("\n___ Day on island: ")
+                .append(Statistics.incrementCountDays())
+                .append(" ----\n\n---- Всего на карте: ")
+                .append(String.format("%,d",gameMap.getSetUnits().size()))
+                .append("\n")
+                .append("--Всего умерло: ")
+                .append(String.format("%,d",Statistics.getCountAllDead()))
+                .append("\n---- Съедено ")
+                .append(String.format("%,d",Statistics.getCountHaveBeenEaten()))
+                .append("\n---- Умерло от голода ")
+                .append(String.format("%,d",Statistics.getCountDeadOfHanger()))
                 .append('\n')
-                .append('\n');
+                .append("-- Общее потомство ")
+                .append(String.format("%,d",Statistics.gatCountMultiply()))
+                .append("\n\n");
+
         int count = 0;
 
         for (Map.Entry<String, Integer> units : statisticsMap.entrySet()) {
@@ -71,10 +81,10 @@ public class ConsoleView implements View {
                 resultString.append('\n');
                 count = 0;
             }
-            resultString.append(units.getKey()).append(" = ").append(units.getValue()).append(" ").append("\t|\t");
+            String number = String.format("%,d", units.getValue());
+            resultString.append(units.getKey()).append(" = ").append(number).append(" ").append("\t|\t");
             count++;
         }
-        countMinusSatiety = 0;
         System.out.println(resultString);
         return resultString.toString();
     }
@@ -143,6 +153,7 @@ public class ConsoleView implements View {
     public void showFinishMassage() {
         StringBuilder finisMassage = new StringBuilder();
         finisMassage.append("\n|--------------Симуляция окончена--------------|\n");
-        showStatistics();
+        finisMassage.append(showStatistics());
+        System.out.println(finisMassage);
     }
 }

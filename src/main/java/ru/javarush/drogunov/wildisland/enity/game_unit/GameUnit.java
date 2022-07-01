@@ -6,6 +6,7 @@ import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
 import ru.javarush.drogunov.wildisland.exceptions.CloneUnitException;
 import ru.javarush.drogunov.wildisland.interfaces.Multiple;
 import ru.javarush.drogunov.wildisland.util.Randomizer;
+import ru.javarush.drogunov.wildisland.util.Statistics;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,7 +23,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
     private final String type = this.getClass().getSimpleName();
     private final String name;
     private final String icon;
-    protected AtomicBoolean access = new AtomicBoolean(true);
+    private AtomicBoolean access = new AtomicBoolean(true);
 
     protected Lock lock = new ReentrantLock(true);
 
@@ -57,6 +58,9 @@ public abstract class GameUnit implements Cloneable, Multiple {
             if (cell.isMaxPopulation(this)) {
                 GameUnit clone = this.clone(this);
                 cell.getUnitsMap().get(getType()).add(clone);
+                //Statistics
+                Statistics.incrementCountMultiply();
+                //Statistics
                 return true;
             }
         } finally {
@@ -71,6 +75,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
         clone.id = indicator.incrementAndGet();
         clone.weight = Randomizer.getRandom(limits.getMaxWeight());
         clone.satiety = Randomizer.getRandom(limits.getMaxSatiety());
+        clone.setAccess(true);
         return clone;
     }
 
@@ -120,7 +125,8 @@ public abstract class GameUnit implements Cloneable, Multiple {
 
 
     public GameUnit saveGet() {
-        access.compareAndExchangeAcquire(true, false);
+//        access.compareAndExchangeAcquire(true, false);
+        access.compareAndExchange(true, false);
         return this;
     }
 

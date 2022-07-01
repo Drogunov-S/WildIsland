@@ -5,6 +5,7 @@ import ru.javarush.drogunov.wildisland.enity.TargetGameUnit;
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 import ru.javarush.drogunov.wildisland.enity.game_unit.plants.Plant;
 import ru.javarush.drogunov.wildisland.exceptions.UnitTargetNotFoundException;
+import ru.javarush.drogunov.wildisland.util.Statistics;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -67,6 +68,10 @@ public class GameMap {
         return allUnits;
     }
 
+    public void accessOnAll() {
+        getSetUnits().stream().forEach(gameUnit -> gameUnit.setAccess(true));
+    }
+
     @Override
     public String toString() {
         return Arrays.deepToString(space);
@@ -80,8 +85,9 @@ public class GameMap {
     }
 
     public boolean isFinished() {
-       return getSetUnits().stream()
-               .allMatch(gameUnit -> gameUnit instanceof Plant);
+        return getSetUnits().stream()
+                .allMatch(gameUnit -> gameUnit instanceof Plant)
+                || Statistics.getCountDays() == GameSettings.getGameTimeDays();
     }
 
     public void lock() {
@@ -108,7 +114,6 @@ public class GameMap {
             Integer probability = pair.getValue();
 
             GameUnit target = cell.getTarget(simpleName);
-
             if (target != null) {
                 return new TargetGameUnit(target, probability);
             }

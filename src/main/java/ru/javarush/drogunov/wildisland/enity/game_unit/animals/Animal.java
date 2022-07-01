@@ -6,6 +6,7 @@ import ru.javarush.drogunov.wildisland.enity.game_unit.Limits;
 import ru.javarush.drogunov.wildisland.interfaces.Eating;
 import ru.javarush.drogunov.wildisland.interfaces.Walkable;
 import ru.javarush.drogunov.wildisland.util.Randomizer;
+import ru.javarush.drogunov.wildisland.util.Statistics;
 
 
 public abstract class Animal
@@ -33,7 +34,7 @@ public abstract class Animal
         double weightTarget = target.getWeight();
         double result = neededSatiety + weightTarget;
         //TODO вот погрешность можно было бы обработать тут или обработать в сеттере
-        double  gatedSatiety =  result > 0 ? neededSatiety : weightTarget;
+        plusSatiety(result > 0 ? neededSatiety : weightTarget);
 //        System.out.printf("ID atac %d Target %d max %.3f | current = %.3f | need %.3f | weintTar %.3f | resul1 %.3f | gate %.3f |\n",getId(), target.getId(), maxSatiety,this.getSatiety() , neededSatiety, weightTarget, result, gatedSatiety);
 
         return satiety >= maxSatiety;
@@ -82,6 +83,8 @@ public abstract class Animal
     public boolean walk(Cell cell) {
         if (satiety < 0) {
             saveDie(cell);
+            //Statistics
+            Statistics.incrementCountDeadOfHanger();
             return false;
         }
         cell.lockCell();

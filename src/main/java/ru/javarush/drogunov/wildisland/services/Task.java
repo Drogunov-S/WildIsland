@@ -37,37 +37,48 @@ public class Task {
             animal.walk(cell);
             gameUnit.subtractionSatiety(decreaseForWalk);
         }
-        gameUnit.multiply(cell);
-        gameUnit.subtractionSatiety(decreaseForMultiply);
+//        gameUnit.multiply(cell);
+//        gameUnit.subtractionSatiety(decreaseForMultiply);
     }
 
     private void taskEat(Animal eaterAnimal) {
-        int count = 0;
+        if (eaterAnimal.getSatiety() < 0) {
+            cell.kickGameUnit(eaterAnimal);
+        }
+//        int count = 0;
         if (eaterAnimal.isFullSatiety()) {
             return;
         }
-        TargetGameUnit target = gameMap.getTarget(gameUnit, cell);
-        int probability = target.probability();
         do {
-            if (Randomizer.getResult(probability)) {
-                try {
-                    GameUnit targetUnit = target.targetUnit();
+            try {
+                TargetGameUnit target = gameMap.getTarget(gameUnit, cell);
+                GameUnit targetUnit = target.getTargetUnit();
+                int probability = target.getProbability();
+                if (Randomizer.getResult(probability)) {
+//                System.out.printf("Я %d %s Eat %d %s Access %b\n", eaterAnimal.getId(), eaterAnimal.getName()
+//                        , targetUnit.getId(), targetUnit.getName(), targetUnit.getAccess());
                     cell.kickGameUnit(targetUnit);
+//                    System.out.printf("Атакующий: %s голод %.3f (%.3f)  Цель %s Вес: %.3f (%.2f)\n", eaterAnimal.getName(), eaterAnimal.getSatiety(), eaterAnimal.getLimits().getMaxSatiety(), targetUnit.getName(), targetUnit.getWeight(), targetUnit.getLimits().getMaxWeight());
                     eaterAnimal.eat(targetUnit);
-                    count++;
-                } catch (UnitTargetNotFoundException ignored) {
-                    break;
-                    //TODO тут так понимаю логирование
+//                    count++;
+
+                } else {
+                    targetUnit.setAccess(true);
                 }
-                //TODO Что лучше было бы рекурсия или то что сделано do\while
-            } /*else {
+            } catch (UnitTargetNotFoundException e) {
+//                System.out.println("зашли-------------------------------------------------------");
+                break;
+                //TODO тут так понимаю логирование
+            }
+            //TODO Что лучше было бы рекурсия или то что сделано do\while
+             /*else {
                 taskEat(eaterAnimal);
             }*/
         } while (!eaterAnimal.isFullSatiety());
-        if (count >= 2) {
-            System.out.println(count + " ВСЕГО СЪЕДЕНО----------------------" + eaterAnimal.isFullSatiety()
-                    + " " + eaterAnimal.getSatiety() + " " + eaterAnimal.getLimits().getMaxSatiety());
-        }
+//        if (count >= 2) {
+//            System.out.println(count + " ВСЕГО СЪЕДЕНО----------------------" + eaterAnimal.isFullSatiety()
+//                    + " " + eaterAnimal.getSatiety() + " " + eaterAnimal.getLimits().getMaxSatiety());
+//        }
     }
 
 }

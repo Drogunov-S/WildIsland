@@ -103,13 +103,12 @@ public class Cell {
                 // строки 105 111 оставил специально
 //                throw new UnitTargetNotFoundException("Target not found");
             }
-            //noinspection OptionalGetWithoutIsPresent
             GameUnit targetUnit = setTargetUnits.stream()
-                    .filter(gameUnit -> !gameUnit.isDie())
+                    .filter(GameUnit::isAccess)
                     .findAny()
-                    .orElseGet(() -> null);
+                            .orElseGet(() -> null);
 //                    .orElseThrow(() -> new UnitTargetNotFoundException("All units don't access"));
-            return targetUnit;
+            return targetUnit == null ? null : targetUnit.saveGet();
         } finally {
             unlockCell();
         }

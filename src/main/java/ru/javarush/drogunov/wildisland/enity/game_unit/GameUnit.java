@@ -27,9 +27,9 @@ public abstract class GameUnit implements Cloneable, Multiple {
     protected Lock lock = new ReentrantLock(true);
 
     protected volatile double satiety;
+
     protected double weight;
     protected Limits limits;
-
     public GameUnit(String name, String icon, Limits limits) {
         this.name = name;
         this.icon = icon;
@@ -110,8 +110,18 @@ public abstract class GameUnit implements Cloneable, Multiple {
         lock.unlock();
     }
 
-    public boolean isDie() {
-        return !access.getPlain();
+    public boolean isAccess() {
+        return access.getPlain();
+    }
+
+    public void setAccess(boolean set) {
+        access.set(set);
+    }
+
+
+    public GameUnit saveGet() {
+        access.compareAndExchangeAcquire(true, false);
+        return this;
     }
 
 }

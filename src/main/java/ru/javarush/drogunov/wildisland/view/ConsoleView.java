@@ -16,6 +16,7 @@ public class ConsoleView implements View {
     private final GameMap gameMap;
     private final int positions = 3;
     private final String border = "═".repeat(positions);
+    AtomicInteger days = new AtomicInteger();
 
     private int countMinusSatiety = 0;
 
@@ -26,6 +27,7 @@ public class ConsoleView implements View {
     @Override
     @SuppressWarnings("I don't undestande what to do it this warrning")
     public String showStatistics() {
+
         Cell[][] cells = gameMap.getSpace();
         //TODO не могу как передать компаратор для сортировки по значению
         Map<String, Integer> statisticsMap = new TreeMap<>();
@@ -34,7 +36,6 @@ public class ConsoleView implements View {
                 //TODO еще раз понять что такое Type
                 Map<String, Set<GameUnit>> residents = cell.getUnitsMap();
                 for (Set<GameUnit> unitsOnCell : residents.values()) {
-                    count(unitsOnCell);
                     if (unitsOnCell.size() > 0) {
                         String gameUnitName = unitsOnCell
                                 .stream()
@@ -54,32 +55,28 @@ public class ConsoleView implements View {
                 }
             }
         }
-        String all = "Всего на карте: " + gameMap.getSetUnits().size() + '\n';
+
         StringBuilder resultString = new StringBuilder();
-        resultString.append(all);
+        resultString.append("\n--- Day on island: ")
+                .append(days.incrementAndGet())
+                .append("\n--- Всего на карте: ")
+                .append(gameMap.getSetUnits().size())
+                .append('\n')
+                .append('\n');
         int count = 0;
 
         for (Map.Entry<String, Integer> units : statisticsMap.entrySet()) {
-            int columns = 16;
+            int columns = 8;
             if (count == columns) {
                 resultString.append('\n');
                 count = 0;
             }
-            resultString.append(units.getKey()).append(" = ").append(units.getValue()).append(" ");
+            resultString.append(units.getKey()).append(" = ").append(units.getValue()).append(" ").append("\t|\t");
             count++;
         }
-        System.out.println("Сытность в минусе: " + countMinusSatiety);
         countMinusSatiety = 0;
         System.out.println(resultString);
         return resultString.toString();
-    }
-
-    private void count(Set<GameUnit> unitsOnCell) {
-    unitsOnCell.forEach(gameUnit -> {
-        if (gameUnit.getSatiety() < 0) {
-            countMinusSatiety++;
-        }
-    });
     }
 
     @Override
@@ -141,5 +138,11 @@ public class ConsoleView implements View {
 
         System.out.println(stringBuilder);
         return stringBuilder.toString();
+    }
+
+    public void showFinishMassage() {
+        StringBuilder finisMassage = new StringBuilder();
+        finisMassage.append("\n|--------------Симуляция окончена--------------|\n");
+        showStatistics();
     }
 }

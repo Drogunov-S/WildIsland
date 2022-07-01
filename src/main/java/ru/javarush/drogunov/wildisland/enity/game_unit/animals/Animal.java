@@ -31,9 +31,11 @@ public abstract class Animal
         double maxSatiety = this.limits.getMaxSatiety();
         double neededSatiety = this.satiety - maxSatiety;
         double weightTarget = target.getWeight();
-        double result = weightTarget - neededSatiety;
+        double result = neededSatiety + weightTarget;
         //TODO вот погрешность можно было бы обработать тут или обработать в сеттере
-        this.plusSatiety(result > 0 ? neededSatiety : weightTarget);
+        double  gatedSatiety =  result > 0 ? neededSatiety : weightTarget;
+//        System.out.printf("ID atac %d Target %d max %.3f | current = %.3f | need %.3f | weintTar %.3f | resul1 %.3f | gate %.3f |\n",getId(), target.getId(), maxSatiety,this.getSatiety() , neededSatiety, weightTarget, result, gatedSatiety);
+
         return satiety >= maxSatiety;
 
     }
@@ -43,9 +45,10 @@ public abstract class Animal
         double result = satiety + plus;
         double maxSatiety = limits.getMaxSatiety();
 
-//        System.out.printf("Error %.3f, result %.3f = sati %.3f + plus %.3f   SATY = %b\n", APPROVE_ERROR, result, satiety, plus, isFullSatiety());
+//        System.out.printf("%s Error %.3f, result %.3f = sati %.3f + plus %.3f   SATY = %b\n",getName() , APPROVE_ERROR, result, satiety, plus, isFullSatiety());
 
         satiety = (result - maxSatiety <= error) ? maxSatiety : result;
+//        System.out.printf("Установленная сытность %.3f, Добавлено: %.3f Результат: Сыт? %b\n", satiety, plus, isFullSatiety());
     }
 
     public boolean isFullSatiety() {

@@ -9,13 +9,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static ru.javarush.drogunov.wildisland.Constants.GAME_UNITS;
 
 public class GameWorker extends Thread {
     public static final int PERIOD = 500;
-    AtomicInteger days = new AtomicInteger();
+
     private final Game game;
 
     public GameWorker(Game game) {
@@ -42,7 +41,7 @@ public class GameWorker extends Thread {
             workers.forEach(servicePool::submit);
             servicePool.shutdown();
 
-            System.out.println("\nDay on island: " + days.get());
+
             try {
                 if (servicePool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS)) {
 //                        game.getView().showMap();
@@ -53,12 +52,10 @@ public class GameWorker extends Thread {
                 throw new RuntimeException(e);
             }
 
-            if (game.getGameMap().getSizeAlive() == 0) {
-                System.out.println("Мир пуст");
-                game.getView().showCountCellUnits();
+            if (game.getGameMap().isFinished()) {
+                view.showFinishMassage();
                 mainPool.shutdownNow();
             }
-            days.incrementAndGet();
 
 
         }, PERIOD, PERIOD, TimeUnit.MILLISECONDS);

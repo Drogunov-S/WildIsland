@@ -6,4 +6,6 @@ public interface View {
     String showMap();
 
     String showCountCellUnits();
+
+    void showFinishMassage();
 }

@@ -3,6 +3,8 @@ package ru.javarush.drogunov.wildisland.enity.game_space;
 
 import ru.javarush.drogunov.wildisland.enity.TargetGameUnit;
 import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
+import ru.javarush.drogunov.wildisland.enity.game_unit.plants.Plant;
+import ru.javarush.drogunov.wildisland.exceptions.UnitTargetNotFoundException;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -77,6 +79,11 @@ public class GameMap {
         return size;
     }
 
+    public boolean isFinished() {
+       return getSetUnits().stream()
+               .allMatch(gameUnit -> gameUnit instanceof Plant);
+    }
+
     public void lock() {
         lock.lock();
     }
@@ -102,9 +109,11 @@ public class GameMap {
 
             GameUnit target = cell.getTarget(simpleName);
 
-            return new TargetGameUnit(target, probability);
+            if (target != null) {
+                return new TargetGameUnit(target, probability);
+            }
         }
-        return null;
+        throw new UnitTargetNotFoundException("Target not found");
     }
 
 }

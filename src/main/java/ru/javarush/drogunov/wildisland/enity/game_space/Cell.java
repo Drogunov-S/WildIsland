@@ -64,9 +64,7 @@ public class Cell {
     public boolean isMaxPopulation(GameUnit gameUnit) {
         Set<GameUnit> set = unitsOnCell.get(gameUnit.getType());
         int size = set.size();
-        return size <= gameUnit
-                .getLimits()
-                .getMaxPopulation();
+        return size <= gameUnit.getLimits().getMaxPopulation();
     }
 
 
@@ -95,19 +93,16 @@ public class Cell {
         lockCell();
         try {
             Set<GameUnit> setTargetUnits = unitsOnCell.get(nameTargetUnit);
-            if (setTargetUnits.size() == 0) {
+//            if (setTargetUnits.size() == 0) {
 
-                //TODO А вообще нужна ли такая ошибка?
-                // И где ее обрабатывать в GameMap или выше.
-                // Я ее бросание ошибки добавил в TargetGameUnit при значении null, комментарии оставил хочу совет
-                // строки 105 111 оставил специально
+            //TODO А вообще нужна ли такая ошибка?
+            // И где ее обрабатывать в GameMap или выше.
+            // Я ее бросание ошибки добавил в TargetGameUnit при значении null, комментарии оставил хочу совет
+            // строки 105 111 оставил специально
 //                throw new UnitTargetNotFoundException("Target not found");
-            }
-            GameUnit targetUnit = setTargetUnits.stream()
-                    .filter(GameUnit::isAccess)
-                    .findAny()
-                            .orElseGet(() -> null);
-//                    .orElseThrow(() -> new UnitTargetNotFoundException("All units don't access"));
+//            }
+            @SuppressWarnings("ExcessiveLambdaUsage") GameUnit targetUnit = setTargetUnits.stream().filter(GameUnit::isAccess).findAny().orElseGet(() -> null);
+            //TODO если использовал без () -> не возвращало null
             return targetUnit == null ? null : targetUnit.saveGet();
         } finally {
             unlockCell();

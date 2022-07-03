@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <pattern value="ru.javarush.drogunov.wildisland.game_settings.EssencesOnTheIslandTest" />
+    <pattern value="ru.javarush.drogunov.wildisland.view.ConsoleView" method="showMap" />
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
     <option name="originalFiles">

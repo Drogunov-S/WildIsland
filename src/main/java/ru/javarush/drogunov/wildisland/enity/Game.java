@@ -2,7 +2,8 @@ package ru.javarush.drogunov.wildisland.enity;
 
 import ru.javarush.drogunov.wildisland.enity.game_space.GameMap;
 import ru.javarush.drogunov.wildisland.view.View;
-//TODO Не понял как подавить данный ворнинг?
+
+@SuppressWarnings("ClassCanBeRecord")
 public class Game {
 
     private final GameMap gameMap;

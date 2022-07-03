@@ -6,7 +6,6 @@ import ru.javarush.drogunov.wildisland.enity.game_space.Cell;
 import ru.javarush.drogunov.wildisland.exceptions.CloneUnitException;
 import ru.javarush.drogunov.wildisland.interfaces.Multiple;
 import ru.javarush.drogunov.wildisland.util.Randomizer;
-import ru.javarush.drogunov.wildisland.util.Statistics;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -31,6 +30,7 @@ public abstract class GameUnit implements Cloneable, Multiple {
 
     protected double weight;
     protected Limits limits;
+
     public GameUnit(String name, String icon, Limits limits) {
         this.name = name;
         this.icon = icon;
@@ -58,9 +58,6 @@ public abstract class GameUnit implements Cloneable, Multiple {
             if (cell.isMaxPopulation(this)) {
                 GameUnit clone = this.clone(this);
                 cell.getUnitsMap().get(getType()).add(clone);
-                //Statistics
-                Statistics.incrementCountMultiply();
-                //Statistics
                 return true;
             }
         } finally {
@@ -79,18 +76,17 @@ public abstract class GameUnit implements Cloneable, Multiple {
         return clone;
     }
 
-    @SuppressWarnings("I'm don't undestend whats to do it")
+    @SuppressWarnings("unchecked")
     public <T extends GameUnit> T clone(T unit) {
         try {
-            T clone = (T) unit.clone();
-            return clone;
+            return (T) unit.clone();
         } catch (CloneNotSupportedException e) {
             throw new CloneUnitException("don't cloned", e);
         }
     }
 
-    @SuppressWarnings("Method will be use future")
-    public boolean saveDie(Cell cell) {
+    @SuppressWarnings("SameReturnValue")
+    public void saveDie(Cell cell) {
         cell.lockCell();
         try {
             Set<GameUnit> set = cell.getUnitsMap().get(this.getType());
@@ -98,21 +94,12 @@ public abstract class GameUnit implements Cloneable, Multiple {
         } finally {
             cell.unlockCell();
         }
-        return false;
     }
 
+    //TODO Non-atomic operation on volatile field
+    // Я так понимаю при обращении к переменной помеченной volatile c метода это действие не атомарно?
     public void subtractionSatiety(double subtract) {
         satiety -= subtract;
-    }
-
-    public void lock() {
-        access.getAndSet(false);
-        lock.lock();
-    }
-
-    public void unlock() {
-        access.getAndSet(true);
-        lock.unlock();
     }
 
     public boolean isAccess() {
@@ -124,9 +111,11 @@ public abstract class GameUnit implements Cloneable, Multiple {
     }
 
 
-    public GameUnit saveGet() {
+    public synchronized GameUnit saveGet() {
 //        access.compareAndExchangeAcquire(true, false);
         access.compareAndExchange(true, false);
+        //Помню что это грязно блокировать в одном месте, а разблокировать в другом.
+
         return this;
     }
 

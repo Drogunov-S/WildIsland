@@ -10,6 +10,7 @@ public class Randomizer {
 
         return ThreadLocalRandom.current().nextInt(to);
     }
+
     public static double getRandom(double to) {
         if (to == 0) {
             return 0.0;
@@ -18,6 +19,6 @@ public class Randomizer {
     }
 
     public static boolean getResult(int probability) {
-        return ThreadLocalRandom.current().nextInt(0,100) <= probability;
+        return ThreadLocalRandom.current().nextInt(0, 100) <= probability;
     }
 }

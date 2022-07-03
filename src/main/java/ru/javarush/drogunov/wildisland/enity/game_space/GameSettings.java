@@ -12,10 +12,10 @@ public class GameSettings {
     @Getter
     @Settings(code = 2, name = "Длина игрового поля")
     private final int length = 20;//20
-//временно статик и паблик
+    //временно статик и паблик, не успел перенести в GameSetting
     @Getter
     @Settings(code = 3, name = "Максимальное время игры")
-    private static int gameTimeDays = 60;
+    private final static int gameTimeDays = 60;
 }
 
 

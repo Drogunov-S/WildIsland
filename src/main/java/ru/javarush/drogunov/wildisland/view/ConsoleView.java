@@ -25,15 +25,10 @@ public class ConsoleView implements View {
     @Override
     @SuppressWarnings("I don't undestande what to do it this warrning")
     public String showStatistics() {
-        Set<GameUnit> collect = gameMap.getSetUnits().stream().filter(gameUnit -> !gameUnit.isAccess()).collect(Collectors.toSet());
-collect.size();
-
         Cell[][] cells = gameMap.getSpace();
-        //TODO не могу как передать компаратор для сортировки по значению
         Map<String, Integer> statisticsMap = new TreeMap<>();
         for (Cell[] row : cells) {
             for (Cell cell : row) {
-                //TODO еще раз понять что такое Type
                 Map<String, Set<GameUnit>> residents = cell.getUnitsMap();
                 for (Set<GameUnit> unitsOnCell : residents.values()) {
                     if (unitsOnCell.size() > 0) {
@@ -60,17 +55,25 @@ collect.size();
         resultString.append("\n___ Day on island: ")
                 .append(Statistics.incrementCountDays())
                 .append(" ----\n\n---- Всего на карте: ")
-                .append(String.format("%,d",gameMap.getSetUnits().size()))
+                .append(String.format("%,d", gameMap.getSetUnits().size()))
                 .append("\n")
-                .append("--Всего умерло: ")
-                .append(String.format("%,d",Statistics.getCountAllDead()))
-                .append("\n---- Съедено ")
-                .append(String.format("%,d",Statistics.getCountHaveBeenEaten()))
-                .append("\n---- Умерло от голода ")
-                .append(String.format("%,d",Statistics.getCountDeadOfHanger()))
+                .append("--Всего умерло за день : ")
+                .append(String.format("%,d", Statistics.getCountDeadDay()))
+                .append(",\t\t всего: ")
+                .append(String.format("%,d", Statistics.getCountDeadAll()))
+                .append("\n---- Съедено за день: ")
+                .append(String.format("%,d", Statistics.getCountHaveBeenEatenDay()))
+                .append(",\t\t\tвсего: ")
+                .append(String.format("%,d", Statistics.getCountHaveBeenEatenAll()))
+                .append("\n---- Умерло от голода за день: ")
+                .append(String.format("%,d", Statistics.getCountDeadOfHangerDay()))
+                .append(",\t\tвсего: ")
+                .append(String.format("%,d", Statistics.getCountDeadOfHangerAll()))
                 .append('\n')
-                .append("-- Общее потомство ")
-                .append(String.format("%,d",Statistics.gatCountMultiply()))
+                .append("-- Общее потомство за день: ")
+                .append(String.format("%,d", Statistics.getCountMultiplyDay()))
+                .append(",\t всего: ")
+                .append(String.format("%,d", Statistics.getCountMultiplyAll()))
                 .append("\n\n");
 
         int count = 0;
@@ -86,11 +89,13 @@ collect.size();
             count++;
         }
         System.out.println(resultString);
+        Statistics.updateDataOfDay();
         return resultString.toString();
     }
 
+    @SuppressWarnings("unused")
+    //used for test
     @Override
-    //TODO разобрать и понять
     public String showMap() {
         Cell[][] cells = gameMap.getSpace();
         final int rows = cells.length;
@@ -128,6 +133,8 @@ collect.size();
                 .collect(Collectors.joining("", "", String.valueOf(right))));
     }
 
+    @SuppressWarnings("unused")
+    //Used for test
     @Override
     public String showCountCellUnits() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -151,9 +158,8 @@ collect.size();
     }
 
     public void showFinishMassage() {
-        StringBuilder finisMassage = new StringBuilder();
-        finisMassage.append("\n|--------------Симуляция окончена--------------|\n");
-        finisMassage.append(showStatistics());
+        String finisMassage = "\n|--------------Симуляция окончена--------------|\n" +
+                showStatistics();
         System.out.println(finisMassage);
     }
 }

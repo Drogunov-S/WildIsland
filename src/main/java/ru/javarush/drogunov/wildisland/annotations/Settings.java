@@ -9,8 +9,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 
 public @interface Settings {
+    //Should have been used to crate config and selection settings
+    @SuppressWarnings("unused") int code();
 
-    int code();
-    String name();
+    @SuppressWarnings("unused") String name();
 
 }

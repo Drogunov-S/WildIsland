@@ -7,23 +7,21 @@ import ru.javarush.drogunov.wildisland.enity.game_unit.plants.Plant;
 import ru.javarush.drogunov.wildisland.exceptions.UnitTargetNotFoundException;
 import ru.javarush.drogunov.wildisland.util.Statistics;
 
-import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static ru.javarush.drogunov.wildisland.Constants.PROBABILITY_EATING;
 
 public class GameMap {
     private final Cell[][] space;
-    private final Lock lock = new ReentrantLock(true);
-
 
     public GameMap(GameSettings gameSettings) {
         int width = gameSettings.getWidth();
         int length = gameSettings.getLength();
         space = new Cell[width][length];
     }
-
 
     public int getCountLine() {
         return space.length;
@@ -39,37 +37,8 @@ public class GameMap {
 
     public Set<GameUnit> getSetUnits() {
         Set<GameUnit> setUnitsOnGameMap = new HashSet<>();
-        Arrays.stream(space)
-                .forEach(lines -> Arrays.stream(lines)
-                        .forEach(cell -> cell.getUnitsMap()
-                                .values()
-                                .forEach(setUnitsOnGameMap::addAll)));
+        Arrays.stream(space).forEach(lines -> Arrays.stream(lines).forEach(cell -> cell.getUnitsMap().values().forEach(setUnitsOnGameMap::addAll)));
         return setUnitsOnGameMap;
-    }
-
-    public Map<Cell, Map<String, Set<GameUnit>>> getAllUnits() {
-        Map<Cell, Map<String, Set<GameUnit>>> allUnits = new HashMap<>();
-        Arrays.stream(space)
-                .forEach(cells ->
-                        Arrays.stream(cells)
-                                .forEach(cell -> {
-                                    Map<String, Set<GameUnit>> mapUnitsOnCell = cell.getUnitsMap();
-                                    if (allUnits.containsKey(cell)) {
-                                        Map<String, Set<GameUnit>> stringGameUnitMap = allUnits.get(cell);
-                                        mapUnitsOnCell.forEach((name, unitsOnCell) -> {
-                                            if (stringGameUnitMap.containsKey(name)) {
-                                                stringGameUnitMap.get(name).addAll(mapUnitsOnCell.get(name));
-                                            }
-                                        });
-                                    } else {
-                                        allUnits.put(cell, mapUnitsOnCell);
-                                    }
-                                }));
-        return allUnits;
-    }
-
-    public void accessOnAll() {
-        getSetUnits().stream().forEach(gameUnit -> gameUnit.setAccess(true));
     }
 
     @Override
@@ -77,25 +46,8 @@ public class GameMap {
         return Arrays.deepToString(space);
     }
 
-    public int getSizeAlive() {
-        lock();
-        int size = getSetUnits().size();
-        unlock();
-        return size;
-    }
-
     public boolean isFinished() {
-        return getSetUnits().stream()
-                .allMatch(gameUnit -> gameUnit instanceof Plant)
-                || Statistics.getCountDays() == GameSettings.getGameTimeDays();
-    }
-
-    public void lock() {
-        lock.lock();
-    }
-
-    public void unlock() {
-        lock.unlock();
+        return getSetUnits().stream().allMatch(gameUnit -> gameUnit instanceof Plant) || Statistics.getCountDays() == GameSettings.getGameTimeDays();
     }
 
 //TODO в targetUnits хранится вероятность съедания, но согласно ООП как я его понимаю, GameMap
@@ -108,9 +60,7 @@ public class GameMap {
         Map<Class<?>, Integer> targetUnits = PROBABILITY_EATING.get(eater.getClass());
 
         for (var pair : targetUnits.entrySet()) {
-            String simpleName = pair
-                    .getKey()
-                    .getSimpleName();
+            String simpleName = pair.getKey().getSimpleName();
             Integer probability = pair.getValue();
 
             GameUnit target = cell.getTarget(simpleName);

@@ -4,5 +4,6 @@ import ru.javarush.drogunov.wildisland.enity.game_unit.GameUnit;
 
 @FunctionalInterface
 public interface Eating {
-    boolean eat(GameUnit gameUnit);
+    @SuppressWarnings("unused")
+    void eat(GameUnit gameUnit);
 }

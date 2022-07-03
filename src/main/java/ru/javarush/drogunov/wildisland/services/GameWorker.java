@@ -26,15 +26,12 @@ public class GameWorker extends Thread {
 
         View view = game.getView();
         view.showStatistics();
+        //For test
 //        view.showCountCellUnits();
-
 
         ScheduledExecutorService mainPool = Executors.newScheduledThreadPool(2);
 
-        List<GameUnitWorker> workers = GAME_UNITS.keySet()
-                .stream()
-                .map(p -> new GameUnitWorker(p, game.getGameMap()))
-                .toList();
+        List<GameUnitWorker> workers = GAME_UNITS.keySet().stream().map(p -> new GameUnitWorker(p, game.getGameMap())).toList();
         mainPool.scheduleWithFixedDelay(() -> {
             ExecutorService servicePool = Executors.newFixedThreadPool(16);
             Thread.currentThread().setName("GameWorker MainPool");
@@ -44,10 +41,11 @@ public class GameWorker extends Thread {
 
             try {
                 if (servicePool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS)) {
-                    game.getGameMap().accessOnAll();
-//                        game.getView().showMap();
+//       for test
+//                    game.getView().showMap();
                     game.getView().showStatistics();
-//                        game.getView().showCountCellUnits();
+//      for test
+//                    game.getView().showCountCellUnits();
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -61,5 +59,5 @@ public class GameWorker extends Thread {
 
         }, PERIOD, PERIOD, TimeUnit.MILLISECONDS);
 
-}
+    }
 }

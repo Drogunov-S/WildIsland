@@ -30,16 +30,12 @@ public class Constants {
         GAME_UNITS.put(SimplePlant.class, "");
     }
 
-    //Map storing 1) All unit classes for create island. 2) Value map (Target class, Eating probabilities)
+    //Map storing 1) All unit classes for create island.
+    //                  2) Value map (Target class, Eating probabilities)
     public static final Map<Class<?>, Map<Class<?>, Integer>> PROBABILITY_EATING = new HashMap<>();
 
     static {
-        GAME_UNITS
-                .keySet()
-                .stream()
-                .filter(Animal.class::isAssignableFrom)
-                .forEach(unitEatable -> PROBABILITY_EATING
-                        .put(unitEatable, getTargets(unitEatable)));
+        GAME_UNITS.keySet().stream().filter(Animal.class::isAssignableFrom).forEach(unitEatable -> PROBABILITY_EATING.put(unitEatable, getTargets(unitEatable)));
     }
 
     private static Map<Class<?>, Integer> getTargets(Class<?> unitEater) {

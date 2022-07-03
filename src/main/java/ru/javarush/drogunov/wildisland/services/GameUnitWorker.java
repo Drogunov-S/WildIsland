@@ -10,24 +10,20 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameUnitWorker implements Runnable {
-    private boolean finished = false;
     private final AtomicInteger threadCount = new AtomicInteger(0);
     private final Class<?> prototype;
     private final GameMap gameMap;
     private final Queue<Task> tasks = new ConcurrentLinkedDeque<>();
-
 
     public GameUnitWorker(Class<?> prototype, GameMap gameMap) {
         this.prototype = prototype;
         this.gameMap = gameMap;
     }
 
-
     public void run() {
         Thread.currentThread().setName(prototype.getSimpleName() + "-" + threadCount.incrementAndGet());
 
         Cell[][] cells = gameMap.getSpace();
-        countLiveCells(gameMap);
         for (Cell[] row : cells) {
             for (Cell cell : row) {
                 try {
@@ -44,9 +40,6 @@ public class GameUnitWorker implements Runnable {
 
     private void progressOnOneCell(Cell cell) {
         Set<GameUnit> allUnitsOnCell = cell.getUnitsMap().get(prototype.getSimpleName());
-        if (allUnitsOnCell.size() == 0) {
-            return;
-        }
         cell.lockCell();
         try {
             allUnitsOnCell.forEach(gameUnit -> tasks.add(new Task(gameUnit, cell, gameMap)));
@@ -60,8 +53,4 @@ public class GameUnitWorker implements Runnable {
 
     }
 
-    private boolean countLiveCells(GameMap gameMap) {
-        finished = gameMap.getSetUnits().size() == 0;
-        return finished;
-    }
 }

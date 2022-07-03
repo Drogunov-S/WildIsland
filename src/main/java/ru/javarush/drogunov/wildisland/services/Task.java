@@ -27,27 +27,29 @@ public class Task {
     }
 
     public void toDo() {
-        //TODO зависаю после определенного цикла
         if (gameUnit instanceof Animal animal) {
             if (gameUnit.getSatiety() < 0) {
                 gameUnit.saveDie(cell);
                 //Statistics
                 Statistics.incrementCountDeadOfHanger();
+                return;
             }
+            //TODO просьба дать оценку реализации метода taskEat согласно ООП
+            //TODO Метод Eat реализован по другому чем walk and multiply.
+            // старался сделать по ООП, То что передается Cell видел, не успел исправить, для этого необходимо делать
+            // эффективный поиск Cell по GameUnit в GameMap
             taskEat(animal);
             animal.walk(cell);
             gameUnit.subtractionSatiety(decreaseForWalk);
         }
         gameUnit.multiply(cell);
+        //Statistics
+        Statistics.incrementCountMultiply();
+        //Statistics
         gameUnit.subtractionSatiety(decreaseForMultiply);
     }
 
     private void taskEat(Animal eaterAnimal) {
-        if (eaterAnimal.getSatiety() < 0) {
-            cell.kickGameUnit(eaterAnimal);
-            //Statistics
-            Statistics.incrementCountDeadOfHanger();
-        }
         if (eaterAnimal.isFullSatiety()) {
             return;
         }
@@ -58,9 +60,9 @@ public class Task {
                 int probability = target.getProbability();
                 if (Randomizer.getResult(probability)) {
                     cell.kickGameUnit(targetUnit);
-                    //Statistics
+                    //<Statistics>
                     Statistics.incrementCountHaveBeenEaten();
-                    //Statistics
+                    //</Statistics>
                     eaterAnimal.eat(targetUnit);
                 } else {
                     targetUnit.setAccess(true);

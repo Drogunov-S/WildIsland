@@ -7,11 +7,11 @@ public class GameSettings {
 
     @Getter
     @Settings(code = 1, name = "Ширина игрового поля")
-    private final int width = 20;//100
+    private final int width = 100;
 
     @Getter
     @Settings(code = 2, name = "Длина игрового поля")
-    private final int length = 20;//20
+    private final int length = 20;
     //временно статик и паблик, не успел перенести в GameSetting
     @Getter
     @Settings(code = 3, name = "Максимальное время игры")
